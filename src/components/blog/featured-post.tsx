@@ -9,10 +9,10 @@ interface FeaturedPostProps {
 
 export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
   return (
-    <div className="relative h-[320px] w-[700px] overflow-hidden rounded-lg">
+    <div className="relative h-[320px] w-[750px] overflow-hidden rounded-lg">
       {/* Background Image */}
       <Image
-        src={post.image || "/placeholder.svg"}
+        src={post.image || "/src/assets/images/pics.png"}
         alt={post.title}
         fill
         className="object-cover"

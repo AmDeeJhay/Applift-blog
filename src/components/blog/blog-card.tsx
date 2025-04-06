@@ -49,7 +49,7 @@ export function BlogCard({
     return (
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
-          src={postImage || "/placeholder.svg"}
+          src={postImage || "/src/assets/images/pics.png"}
           alt={postTitle || "Featured post"}
           fill
           className="object-cover"
