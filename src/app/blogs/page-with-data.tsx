@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { BlogCard } from "@/components/blog-card"
+import { BlogCard } from "@/components/blog/blog-card"
 import { blogPosts } from "./data"
 
 export default function BlogsPage() {

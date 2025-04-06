@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import type { BlogPost } from "@/lib/blog-data"
-import { JSX } from "react"
+import Image from "next/image";
+import Link from "next/link";
+import type { BlogPost } from "@/lib/blog-data";
+import { JSX } from "react";
 
-type BlogCardVariant = "compact" | "standard" | "featured"
+type BlogCardVariant = "compact" | "standard" | "featured";
 
 interface BlogCardProps {
-  post?: BlogPost
-  id?: string
-  title?: string
-  author?: string
-  date?: string
-  image?: string
-  excerpt?: string
-  featured?: boolean
-  variant?: BlogCardVariant
+  post?: BlogPost;
+  id?: string;
+  title?: string;
+  author?: string;
+  date?: string;
+  image?: string;
+  excerpt?: string;
+  featured?: boolean;
+  variant?: BlogCardVariant;
 }
 
 export function BlogCard({
@@ -31,18 +31,18 @@ export function BlogCard({
   variant = "compact",
 }: BlogCardProps): JSX.Element {
   // If a post object is provided, use its properties
-  const postId = post?.id || id || ""
-  const postTitle = post?.title || title || ""
-  const postAuthor = post?.author || author || ""
-  const postDate = post?.date || date || ""
-  const postImage = post?.image || image || "/placeholder.svg"
-  const postExcerpt = post?.excerpt || excerpt || ""
-  const isFeatured = post?.featured || featured
+  const postId = post?.id || id || "";
+  const postTitle = post?.title || title || "";
+  const postAuthor = post?.author || author || "";
+  const postDate = post?.date || date || "";
+  const postImage = post?.image || image || "/placeholder.svg";
+  const postExcerpt = post?.excerpt || excerpt || "";
+  const isFeatured = post?.featured || featured;
 
   // Ensure we have the minimum required props
   if (!postId) {
-    console.warn("BlogCard: Missing required 'id' prop")
-    return <div className="p-4 border rounded">Missing blog post data</div>
+    console.warn("BlogCard: Missing required 'id' prop");
+    return <div className="p-4 border rounded">Missing blog post data</div>;
   }
 
   if (variant === "featured") {
@@ -57,7 +57,7 @@ export function BlogCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
         <div className="absolute top-4 left-4">
-          <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">Featured</span>
+          <span className="bg-black text-white text-xs px-3 py-1 rounded-full border-2 border-green-400">Featured</span>
         </div>
         <Link href={`/blogs/${postId}`} className="absolute inset-0">
           <div className="absolute bottom-0 left-0 p-6 text-white">
@@ -70,7 +70,7 @@ export function BlogCard({
           </div>
         </Link>
       </div>
-    )
+    );
   }
 
   if (variant === "standard") {
@@ -100,7 +100,7 @@ export function BlogCard({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Default compact variant
@@ -124,6 +124,5 @@ export function BlogCard({
         </div>
       </div>
     </Link>
-  )
+  );
 }
-
