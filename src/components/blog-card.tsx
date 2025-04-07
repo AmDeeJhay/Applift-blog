@@ -38,7 +38,7 @@ export function BlogCard({ id, title, author, date, image, featured, excerpt }: 
     <Link href={`/blogs/${id}`} className="flex gap-4 group">
       <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
         <Image
-          src={image || "/placeholder.svg"}
+          src={image || "/src/assets/images/pics.png"}
           alt={title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"

@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { BlogPost } from "@/lib/blog-data";
 import { JSX } from "react";
 
-type BlogCardVariant = "compact" | "standard" | "featured";
+type BlogCardVariant = "compact" | "standard" | "featured" | "landscape";
 
 interface BlogCardProps {
   post?: BlogPost;
@@ -75,7 +75,7 @@ export function BlogCard({
 
   if (variant === "standard") {
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-[350px]">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
             src={postImage || "/placeholder.svg"}
@@ -102,6 +102,47 @@ export function BlogCard({
       </div>
     );
   }
+
+
+  if (variant === "landscape") {
+    return (
+      <div className="justify-between flex p-4">
+      <div className="flex flex-col h-[250px] overflow-hidden  rounded-lg gap-4">
+        <div className="relative w-1/2 h-full overflow-hidden rounded-lg flex justify-center items-center">
+          <Image
+            src={postImage || "/src/assets/images/pics.png"}
+            alt={postTitle || "Blog post"}
+            fill
+            className="object-cover hover:scale-105 transition-transform duration-300"
+          />
+          {post?.category && (
+            <div className="absolute top-3 left-3">
+              <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
+                {post.category}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col justify-between flex-1 p-3">
+          <div>
+            <Link href={`/blogs/${postId}`} className="group">
+              <h3 className="font-bold text-base mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
+                {postTitle}
+              </h3>
+            </Link>
+          </div>
+          <div className="text-sm text-right">
+            <span className="text-blue-600">{postAuthor}</span>
+            <span className="text-gray-500 ml-2">{postDate}</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    );
+  }
+  
+  
+  
 
   // Default compact variant
   return (

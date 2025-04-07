@@ -22,7 +22,7 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
       {/* Featured Badge */}
       <div className="absolute top-4 left-4">
-        <span className="bg-black text-white text-xs px-3 py-1 rounded-full border-2 border-green-400">
+        <span className="bg-black text-white text-xs px-3 py-1 rounded-full border-2 border-green-300">
           Featured
         </span>
       </div>
