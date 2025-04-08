@@ -42,7 +42,7 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
       </div>
   
       {/* Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
         {filteredPosts.map((post) => (
           <div
             key={post.id}
