@@ -75,7 +75,7 @@ export function BlogCard({
 
   if (variant === "standard") {
     return (
-      <div className="flex flex-col h-[350px]">
+      <div className="flex flex-col h-[350px] max-w-[300px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
             src={postImage || "/assets/images/pics.png"}
@@ -85,13 +85,17 @@ export function BlogCard({
           />
           {post?.category && (
             <div className="absolute top-3 left-3">
-              <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">{post.category}</span>
+              <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
+                {post.category}
+              </span>
             </div>
           )}
         </div>
         <div className="flex-1 flex flex-col">
           <Link href={`/blogs/${postId}`} className="group">
-            <h3 className="font-bold text-gray-800 text-lg mb-2 group-hover:text-blue-600 transition-colors">{postTitle}</h3>
+            <h3 className="font-bold text-gray-800 text-base mb-2 group-hover:text-blue-600 transition-colors">
+              {postTitle}
+            </h3>
           </Link>
           <p className="text-gray-500 text-sm mb-3 line-clamp-2">{postExcerpt}</p>
           <div className="mt-auto text-sm">
