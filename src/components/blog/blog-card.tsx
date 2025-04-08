@@ -75,7 +75,7 @@ export function BlogCard({
 
   if (variant === "standard") {
     return (
-      <div className="flex flex-col h-[350px] max-w-[300px] mx-auto">
+      <div className="flex flex-col h-[320px] max-w-[300px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
             src={postImage || "/assets/images/pics.png"}
@@ -112,7 +112,7 @@ export function BlogCard({
     return (
       <div className="justify-between flex p-4">
       <div className="flex flex-col h-[250px] overflow-hidden  rounded-lg gap-4">
-        <div className="relative w-1/2 h-full overflow-hidden rounded-lg flex justify-center items-center">
+        <div className="relative w-full h-full overflow-hidden rounded-lg flex justify-center items-center">
           <Image
             src={postImage || "/assets/images/pics.png"}
             alt={postTitle || "Blog post"}

@@ -7,7 +7,7 @@ import { JSX } from "react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "APPLIFT - Our Blogs",
+  title: "Applift - Our Blogs",
   description: "Discover the latest insights and articles from APPLIFT",
 }
 

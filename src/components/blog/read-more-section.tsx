@@ -42,11 +42,11 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
       </div>
   
       {/* Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 px-2">
         {filteredPosts.map((post) => (
           <div
             key={post.id}
-            className="border border-gray-300 rounded-lg overflow-hidden p-4 " // Added padding for spacing
+            className="border border-gray-300 rounded-lg overflow-hidden p-4" // Added padding for spacing
           >
             <BlogCard post={post} variant="standard" />
           </div>
