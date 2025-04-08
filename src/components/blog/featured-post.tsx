@@ -12,7 +12,7 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
     <div className="relative h-[320px] w-[750px] overflow-hidden rounded-lg">
       {/* Background Image */}
       <Image
-        src={post.image || "/src/assets/images/pics.png"}
+        src={post.image || "/assets/images/pics.png"}
         alt={post.title}
         fill
         className="object-cover"

@@ -49,7 +49,7 @@ export function BlogCard({
     return (
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
-          src={postImage || "/src/assets/images/pics.png"}
+          src={postImage || "/assets/images/pics.png"}
           alt={postTitle || "Featured post"}
           fill
           className="object-cover"
@@ -78,7 +78,7 @@ export function BlogCard({
       <div className="flex flex-col h-[350px]">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
-            src={postImage || "/placeholder.svg"}
+            src={postImage || "/assets/images/pics.png"}
             alt={postTitle || "Blog post"}
             fill
             className="object-cover hover:scale-105 transition-transform duration-300"
@@ -110,7 +110,7 @@ export function BlogCard({
       <div className="flex flex-col h-[250px] overflow-hidden  rounded-lg gap-4">
         <div className="relative w-1/2 h-full overflow-hidden rounded-lg flex justify-center items-center">
           <Image
-            src={postImage || "/src/assets/images/pics.png"}
+            src={postImage || "/assets/images/pics.png"}
             alt={postTitle || "Blog post"}
             fill
             className="object-cover hover:scale-105 transition-transform duration-300"
@@ -149,7 +149,7 @@ export function BlogCard({
     <Link href={`/blogs/${postId}`} className="flex gap-4 group">
       <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
         <Image
-          src={postImage || "/placeholder.svg"}
+          src={postImage || "/assets/images/pics.png"}
           alt={postTitle || "Blog post"}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
