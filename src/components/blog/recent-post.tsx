@@ -25,7 +25,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
             </div>
           </div>
         );
-      })}
+      })} 
     </div>
   );
 }

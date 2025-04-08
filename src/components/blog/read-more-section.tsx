@@ -1,29 +1,30 @@
-"use client"
+"use client";
 
-import type { BlogPost } from "@/lib/blog-data"
-import { BlogCard } from "./blog-card"
-import { JSX, useState } from "react"
+import type { BlogPost } from "@/lib/blog-data";
+import { BlogCard } from "./blog-card";
+import { JSX, useState } from "react";
 
 interface ReadMoreSectionProps {
-  posts: BlogPost[]
+  posts: BlogPost[];
 }
 
 export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
-  const [activeCategory, setActiveCategory] = useState<string>("all")
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   // Get unique categories
-  const categories = ["All", ...Array.from(new Set(posts.map((post) => post.category || "Uncategorized")))]
+  const categories = ["All", ...Array.from(new Set(posts.map((post) => post.category || "Uncategorized")))];
 
   // Filter posts by category
   const filteredPosts =
     activeCategory === "all"
       ? posts
       : posts.filter(
-          (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category),
-        )
+          (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
+        );
 
   return (
     <div>
+      {/* Category Buttons */}
       <div className="flex flex-wrap gap-2 mb-6">
         {categories.map((category) => (
           <button
@@ -40,12 +41,14 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
         ))}
       </div>
 
+      {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (
-          <BlogCard key={post.id} post={post} variant="standard" />
+          <div key={post.id} className="border border-gray-300 rounded-lg overflow-hidden">
+            <BlogCard post={post} variant="standard" />
+          </div>
         ))}
       </div>
     </div>
-  )
+  );
 }
-
