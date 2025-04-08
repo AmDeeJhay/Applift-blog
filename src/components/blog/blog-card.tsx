@@ -91,11 +91,11 @@ export function BlogCard({
         </div>
         <div className="flex-1 flex flex-col">
           <Link href={`/blogs/${postId}`} className="group">
-            <h3 className="font-bold text-lg mb-2 group-hover:text-blue-600 transition-colors">{postTitle}</h3>
+            <h3 className="font-bold text-gray-800 text-lg mb-2 group-hover:text-blue-600 transition-colors">{postTitle}</h3>
           </Link>
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{postExcerpt}</p>
+          <p className="text-gray-500 text-sm mb-3 line-clamp-2">{postExcerpt}</p>
           <div className="mt-auto text-sm">
-            <span className="text-blue-600">{postAuthor}</span>
+            <span className="text-gray-500">{postAuthor}</span>
             <span className="text-gray-500 ml-2">{postDate}</span>
           </div>
         </div>

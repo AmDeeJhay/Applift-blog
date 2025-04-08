@@ -17,10 +17,10 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
   // Filter posts by category
   const filteredPosts =
     activeCategory === "all"
-      ? posts
-      : posts.filter(
-          (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
-        );
+    ? posts
+    : posts.filter(
+    (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
+  );
 
   return (
     <div>
@@ -40,11 +40,14 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
           </button>
         ))}
       </div>
-
+  
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (
-          <div key={post.id} className="border border-gray-300 rounded-lg overflow-hidden">
+          <div
+            key={post.id}
+            className="border border-gray-300 rounded-lg overflow-hidden p-4" // Added padding for spacing
+          >
             <BlogCard post={post} variant="standard" />
           </div>
         ))}
