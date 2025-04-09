@@ -26,7 +26,7 @@ export default function ArchivePage(): JSX.Element {
   return (
     <main className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-6 py-4 border-b">
+      <nav className="flex items-center justify-between px-18 py-4 border-b">
         <Link href="/" className="flex items-center">
           <div className="relative w-12 h-12 bg-blue-600 rounded-md flex items-center justify-center">
             <span className="text-white text-xl font-bold">A</span>
