@@ -55,12 +55,35 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
       })}
 
       {/* Extra Two Posts Below the Landscape Post */}
-      <div className="lg:col-span-1 border border-gray-300 rounded-lg p-3">
-        <BlogCard post={posts[3]} variant="standard" />
-      </div>
-      <div className="lg:col-span-1 border border-gray-300 rounded-lg p-3">
-        <BlogCard post={posts[4]} variant="standard" />
-      </div>
+      {posts.slice(1, 5).map((post) => (
+        <div key={post.id} className="border border-gray-300 rounded-lg p-3 px-4">
+          <div className="flex flex-col">
+            {/* Image Section */}
+            <div className="relative w-full h-[200px] overflow-hidden rounded-md mb-3">
+              <Image
+                src={post.image || "/assets/images/pics.png"}
+                alt={post.title}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            {/* Title and Metadata Section */}
+            <div className="flex justify-between items-center mt-2">
+              {/* Post Title */}
+              <h3 className="font-bold text-gray-800 text-lg break-words">
+                {post.title}
+              </h3>
+
+              {/* Author and Date */}
+              <div className="text-sm text-gray-500">
+                <span>{post.author}</span>
+                <span className="ml-2">{post.date}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

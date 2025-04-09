@@ -75,7 +75,7 @@ export function BlogCard({
 
   if (variant === "standard") {
     return (
-      <div className="flex flex-col h-[320px] max-w-[300px] mx-auto">
+      <div className="flex flex-col h-[350px] max-w-[350px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
             src={postImage || "/assets/images/pics.png"}
