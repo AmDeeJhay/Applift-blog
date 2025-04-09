@@ -9,23 +9,23 @@ interface ReadMoreSectionProps {
 }
 
 export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  // const [activeCategory, setActiveCategory] = useState<string>("all");
 
   // Get unique categories
-  const categories = ["All", ...Array.from(new Set(posts.map((post) => post.category || "Uncategorized")))];
+  // const categories = ["All", ...Array.from(new Set(posts.map((post) => post.category || "Uncategorized")))];
 
   // Filter posts by category
-  const filteredPosts =
-    activeCategory === "all"
-    ? posts
-    : posts.filter(
-    (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
-  );
+  // const filteredPosts =
+  //   activeCategory === "all"
+  //   ? posts
+  //   : posts.filter(
+  //   (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
+  // );
 
   return (
     <div>
       {/* Category Buttons */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      {/* <div className="flex flex-wrap gap-2 mb-6">
         {categories.map((category) => (
           <button
             key={category.toLowerCase()}
@@ -39,14 +39,14 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
             {category}
           </button>
         ))}
-      </div>
+      </div> */}
   
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 px-2">
-        {filteredPosts.map((post) => (
+        {posts.map((post) => (
           <div
             key={post.id}
-            className="border border-gray-300 rounded-lg overflow-hidden p-4" // Added padding for spacing
+            className="border border-gray-300 rounded-lg overflow-hidden p-4" 
           >
             <BlogCard post={post} variant="standard" />
           </div>

@@ -10,7 +10,7 @@ interface RecentPostsProps {
 export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.map((post, index) => {
+      {posts.slice(0, 3).map((post, index) => {
         let variant: "standard" | "landscape" = "standard";
         let colSpan = "";
 
@@ -53,6 +53,14 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
           </div>
         );
       })}
+
+      {/* Extra Two Posts Below the Landscape Post */}
+      <div className="lg:col-span-1 border border-gray-300 rounded-lg p-3">
+        <BlogCard post={posts[3]} variant="standard" />
+      </div>
+      <div className="lg:col-span-1 border border-gray-300 rounded-lg p-3">
+        <BlogCard post={posts[4]} variant="standard" />
+      </div>
     </div>
   );
 }
