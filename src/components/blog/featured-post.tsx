@@ -30,7 +30,7 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
       <Link href={`/blogs/${post.id}`} className="absolute inset-0">
         <div className="absolute bottom-0 left-0 w-full px-6 pb-6">
           {/* Green Bar Behind */}
-          <div className="h-11 ml-8 bg-green-400 p-14 rounded-b-lg rounded- w-full absolute bottom-0 z-0" />
+          <div className="h-11 ml-8 bg-green-400 p-14 rounded-b-lg rounded-tr-lg  w-full absolute bottom-0 z-0" />
 
           {/* Black Title Card */}
           <div className="relative z-10 bg-black rounded-lg p-4">
