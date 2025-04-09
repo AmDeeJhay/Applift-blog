@@ -31,18 +31,20 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
                   />
-                  {/* Author and Date */}
-                  <div className="absolute bottom-3 right-3 text-sm text-gray-500 bg-white/80 px-3 py-1 rounded-md">
-                    <span>{post.author}</span>
-                    <span className="ml-2">{post.date}</span>
-                  </div>
                 </div>
 
-                {/* Title Section */}
-                <div>
+                {/* Title and Metadata Section */}
+                <div className="flex justify-between items-center mt-2">
+                  {/* Post Title */}
                   <h3 className="font-bold text-gray-800 text-lg break-words">
                     {post.title}
                   </h3>
+
+                  {/* Author and Date */}
+                  <div className="text-sm text-gray-500">
+                    <span>{post.author}</span>
+                    <span className="ml-2">{post.date}</span>
+                  </div>
                 </div>
               </div>
             ) : (
