@@ -12,7 +12,8 @@ interface BlogPostParams {
   };
 }
 
-export async function generateStaticParams(): Promise<{ id: string }[]> {
+
+export async function generateStaticParams(): Promise<BlogPostParams["params"][]> {
   return blogPosts.map((post) => ({
     id: post.id,
   }));
