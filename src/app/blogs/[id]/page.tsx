@@ -118,7 +118,7 @@ export default function BlogPost({ params }: Props): JSX.Element {
 
             {/* Placeholder content */}
             <p>
-              In today's rapidly evolving digital landscape, businesses are constantly seeking innovative solutions to
+              In todays rapidly evolving digital landscape, businesses are constantly seeking innovative solutions to
               stay competitive. Our team at APPLIFT recently had the opportunity to work with a fintech startup that was
               facing significant challenges with their existing infrastructure.
             </p>
@@ -148,7 +148,7 @@ export default function BlogPost({ params }: Props): JSX.Element {
             <h2>Results</h2>
             <p>
               The new cloud platform has been able to handle a 500% increase in traffic with no performance degradation.
-              Deployment times have been reduced from days to minutes, and the system's overall reliability has improved
+              Deployment times have been reduced from days to minutes, and the systems overall reliability has improved
               significantly.
             </p>
 
