@@ -1,23 +1,51 @@
-import { BlogList } from "@/components/blog/blog-list"
-import { FeaturedPost } from "@/components/blog/featured-post"
-import { RecentPosts } from "@/components/blog/recent-post"
-import { ReadMoreSection } from "@/components/blog/read-more-section"
-import { blogPosts } from "@/lib/blog-data"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
+import { blogPosts } from "@/lib/blog-data";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-export default function BlogsPage() {
-  // Get featured post
-  const featuredPost = blogPosts.find((post) => post.featured)
+interface BlogPostParams {
+  params: {
+    id: string;
+  };
+}
 
-  // Get recent posts (excluding featured)
-  const recentPosts = blogPosts
-    .filter((post) => !post.featured)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+export async function generateStaticParams(): Promise<BlogPostParams["params"][]> {
+  return blogPosts.map((post) => ({
+    id: post.id,
+  }));
+}
 
-  // Get remaining posts for "Read More" section
-  const readMorePosts = blogPosts.filter((post) => !post.featured && !recentPosts.includes(post)).slice(0, 6)
+export async function generateMetadata({ params }: BlogPostParams): Promise<Metadata> {
+  const post = blogPosts.find((post) => post.id === params.id);
+
+  if (!post) {
+    return {
+      title: "Blog Post Not Found",
+    };
+  }
+
+  return {
+    title: `${post.title} | APPLIFT Blog`,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
+  };
+}
+
+export default function BlogPost({ params }: { params: { id: string } }): JSX.Element {
+  const post = blogPosts.find((post) => post.id === params.id);
+
+  if (!post) {
+    notFound();
+  }
+
+  // Find related posts (same category, excluding current post)
+  const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">
@@ -48,64 +76,65 @@ export default function BlogsPage() {
         </div>
       </nav>
 
-      <div className="container mx-auto px-9 py-8">
-        {/* Featured Section */}
-        <section className="mb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Featured Blog Post */}
-            <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
-              {featuredPost && <FeaturedPost post={featuredPost} />}
+      {/* Blog Content */}
+      <div className="container mx-auto px-4 py-8">
+        <Link href="/blogs" className="inline-flex items-center text-blue-600 mb-6">
+          <ChevronLeft size={16} />
+          <span>Back to blogs</span>
+        </Link>
+
+        <article className="max-w-3xl mx-auto">
+          {post.category && (
+            <div className="mb-4">
+              <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">{post.category}</span>
             </div>
+          )}
 
-            {/* Recent Posts List */}
-            <div className="lg:col-span-1">
-              <div className="space-y-6 relative">
-                {/* Navigation Arrows */}
-                {/* <div className="absolute right-0 top-0 flex space-x-2">
-                  <button
-                    className="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
-                    aria-label="Previous posts"
-                  >
-                    <ChevronLeft size={18} />
-                  </button>
-                  <button
-                    className="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
-                    aria-label="Next posts"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
-                </div> */}
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
 
-                {/* Blog Items */}
-                <BlogList posts={recentPosts} />
-              </div>
+          <div className="flex items-center mb-6">
+            <span className="text-blue-600 mr-4">{post.author}</span>
+            <span className="text-gray-500">{post.date}</span>
+          </div>
+
+          <div className="relative w-full h-[400px] mb-8">
+            <Image
+              src={post.image || "/placeholder.svg"}
+              alt={post.title}
+              fill
+              className="object-cover rounded-lg"
+              priority
+            />
+          </div>
+
+          <div className="prose prose-lg max-w-none">
+            <p className="text-lg font-medium mb-6">{post.excerpt}</p>
+            <p>{post.content || "Full blog post content would go here..."}</p>
+          </div>
+        </article>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <div className="max-w-3xl mx-auto mt-16">
+            <h3 className="text-2xl font-bold mb-6">Related Posts</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <Link key={relatedPost.id} href={`/blogs/${relatedPost.id}`} className="group">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-3">
+                    <Image
+                      src={relatedPost.image || "/placeholder.svg"}
+                      alt={relatedPost.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <h4 className="font-medium group-hover:text-blue-600 transition-colors">{relatedPost.title}</h4>
+                </Link>
+              ))}
             </div>
           </div>
-        </section>
-
-        {/* Recent Posts Section */}
-        <section className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Recent Posts</h2>
-            <Link href="/blogs/archive" className="text-blue-600 hover:underline">
-              View all
-            </Link>
-          </div>
-          <RecentPosts posts={recentPosts} />
-        </section>
-
-        {/* Read More Section */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Read More</h2>
-            <Link href="/blogs/categories" className="text-blue-600 hover:underline">
-              All categories
-            </Link>
-          </div>
-          <ReadMoreSection posts={readMorePosts} />
-        </section>
+        )}
       </div>
     </main>
-  )
+  );
 }
-
