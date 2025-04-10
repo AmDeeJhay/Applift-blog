@@ -1,30 +1,30 @@
-import Image from "next/image"
-import Link from "next/link"
-import { ChevronLeft } from "lucide-react"
-import { blogPosts } from "@/lib/blog-data"
-import { notFound } from "next/navigation"
-import type { Metadata } from "next"
-import { JSX } from "react"
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
+import { blogPosts } from "@/lib/blog-data";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { JSX } from "react";
 
-type BlogPostParams = {
+interface BlogPostParams {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({
     id: post.id,
-  }))
+  }));
 }
 
 export async function generateMetadata({ params }: BlogPostParams): Promise<Metadata> {
-  const post = blogPosts.find((post) => post.id === params.id)
+  const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
     return {
       title: "Blog Post Not Found",
-    }
+    };
   }
 
   return {
@@ -35,22 +35,18 @@ export async function generateMetadata({ params }: BlogPostParams): Promise<Meta
       description: post.excerpt,
       images: [post.image],
     },
-  }
+  };
 }
 
-interface Props {
-  params: { id: string }
-}
-
-export default function BlogPost({ params }: Props): JSX.Element {
-  const post = blogPosts.find((post) => post.id === params.id)
+export default function BlogPost({ params }: BlogPostParams): JSX.Element {
+  const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   // Find related posts (same category, excluding current post)
-  const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3)
+  const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">
@@ -119,7 +115,7 @@ export default function BlogPost({ params }: Props): JSX.Element {
             {/* Placeholder content */}
             <p>
               In todays rapidly evolving digital landscape, businesses are constantly seeking innovative solutions to
-              stay competitive. Our team at APPLIFT recently had the opportunity to work with a fintech startup that was
+              stay competitive. Our team at Applift recently had the opportunity to work with a fintech startup that was
               facing significant challenges with their existing infrastructure.
             </p>
 
@@ -184,6 +180,5 @@ export default function BlogPost({ params }: Props): JSX.Element {
         )}
       </div>
     </main>
-  )
+  );
 }
-
