@@ -4,20 +4,21 @@ import { ChevronLeft } from "lucide-react";
 import { blogPosts } from "@/lib/blog-data";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { JSX } from "react";
 
-interface BlogPostParams {
-  params: {
-    id: string;
-  };
-}
-
-export async function generateStaticParams(): Promise<BlogPostParams["params"][]> {
+// Generate static paths
+export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({
     id: post.id,
   }));
 }
 
-export async function generateMetadata({ params }: BlogPostParams): Promise<Metadata> {
+// Metadata generation
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
   const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: BlogPostParams): Promise<Meta
   };
 }
 
+// Blog Post Page Component
 export default function BlogPost({ params }: { params: { id: string } }): JSX.Element {
   const post = blogPosts.find((post) => post.id === params.id);
 
@@ -44,8 +46,9 @@ export default function BlogPost({ params }: { params: { id: string } }): JSX.El
     notFound();
   }
 
-  // Find related posts (same category, excluding current post)
-  const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3);
+  const relatedPosts = blogPosts
+    .filter((p) => p.id !== post.id && p.category === post.category)
+    .slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">
@@ -86,7 +89,9 @@ export default function BlogPost({ params }: { params: { id: string } }): JSX.El
         <article className="max-w-3xl mx-auto">
           {post.category && (
             <div className="mb-4">
-              <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">{post.category}</span>
+              <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">
+                {post.category}
+              </span>
             </div>
           )}
 
@@ -128,7 +133,9 @@ export default function BlogPost({ params }: { params: { id: string } }): JSX.El
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h4 className="font-medium group-hover:text-blue-600 transition-colors">{relatedPost.title}</h4>
+                  <h4 className="font-medium group-hover:text-blue-600 transition-colors">
+                    {relatedPost.title}
+                  </h4>
                 </Link>
               ))}
             </div>
