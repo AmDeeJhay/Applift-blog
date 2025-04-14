@@ -23,6 +23,7 @@
       "@/lib/*": ["src/lib/*"],
       "@/components/blog/*": ["src/components/blog/*"],
       "@/components/ui/*": ["src/components/ui/*"],
+      "@/components/layout/*": ["src/components/layout/*"],
     },
     "plugins": [
       {
