@@ -12,14 +12,19 @@ interface BlogPostParams {
   };
 }
 
-
-export async function generateStaticParams(): Promise<BlogPostParams["params"][]> {
+// Generate static paths
+export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({
     id: post.id,
   }));
 }
 
-export async function generateMetadata({ params }: BlogPostParams): Promise<Metadata> {
+// Metadata generation
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
   const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
@@ -39,15 +44,17 @@ export async function generateMetadata({ params }: BlogPostParams): Promise<Meta
   };
 }
 
-export default function BlogPost({ params }: BlogPostParams): JSX.Element {
+// Blog Post Page Component
+export default function BlogPost({ params }: { params: { id: string } }): JSX.Element {
   const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
     notFound();
   }
 
-  // Find related posts (same category, excluding current post)
-  const relatedPosts = blogPosts.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3);
+  const relatedPosts = blogPosts
+    .filter((p) => p.id !== post.id && p.category === post.category)
+    .slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white">
@@ -88,7 +95,9 @@ export default function BlogPost({ params }: BlogPostParams): JSX.Element {
         <article className="max-w-3xl mx-auto">
           {post.category && (
             <div className="mb-4">
-              <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">{post.category}</span>
+              <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full">
+                {post.category}
+              </span>
             </div>
           )}
 
@@ -112,49 +121,6 @@ export default function BlogPost({ params }: BlogPostParams): JSX.Element {
           <div className="prose prose-lg max-w-none">
             <p className="text-lg font-medium mb-6">{post.excerpt}</p>
             <p>{post.content || "Full blog post content would go here..."}</p>
-
-            {/* Placeholder content */}
-            <p>
-              In todays rapidly evolving digital landscape, businesses are constantly seeking innovative solutions to
-              stay competitive. Our team at Applift recently had the opportunity to work with a fintech startup that was
-              facing significant challenges with their existing infrastructure.
-            </p>
-
-            <h2>The Challenge</h2>
-            <p>
-              The client was experiencing exponential growth, with their user base doubling every three months. Their
-              existing monolithic architecture was struggling to handle the increased load, resulting in performance
-              issues and frequent downtime.
-            </p>
-
-            <h2>Our Approach</h2>
-            <p>
-              We adopted a cloud-native approach, breaking down the monolithic application into microservices that could
-              be independently scaled and deployed. This allowed for greater flexibility and resilience in the system.
-            </p>
-
-            <h2>Key Technologies Used</h2>
-            <ul>
-              <li>Kubernetes for container orchestration</li>
-              <li>AWS for cloud infrastructure</li>
-              <li>Terraform for infrastructure as code</li>
-              <li>Prometheus and Grafana for monitoring</li>
-              <li>CI/CD pipeline with GitHub Actions</li>
-            </ul>
-
-            <h2>Results</h2>
-            <p>
-              The new cloud platform has been able to handle a 500% increase in traffic with no performance degradation.
-              Deployment times have been reduced from days to minutes, and the systems overall reliability has improved
-              significantly.
-            </p>
-
-            <h2>Lessons Learned</h2>
-            <p>
-              Throughout this project, we gained valuable insights into building scalable cloud platforms for
-              high-growth companies. We learned the importance of designing for failure, implementing robust monitoring,
-              and creating a culture of continuous improvement.
-            </p>
           </div>
         </article>
 
@@ -173,7 +139,9 @@ export default function BlogPost({ params }: BlogPostParams): JSX.Element {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h4 className="font-medium group-hover:text-blue-600 transition-colors">{relatedPost.title}</h4>
+                  <h4 className="font-medium group-hover:text-blue-600 transition-colors">
+                    {relatedPost.title}
+                  </h4>
                 </Link>
               ))}
             </div>
