@@ -6,13 +6,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { JSX } from "react";
 
-
-
 // Generate static paths
 export async function generateStaticParams(): Promise<{ id: string }[]> {
-  return blogPosts.map((post) => ({
-    id: post.id
-  }));
+  return blogPosts.map((post) => ({ id: post.id }));
 }
 
 // Metadata generation
