@@ -11,7 +11,7 @@ import { JSX } from "react";
 // Generate static paths
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({
-    id: post.id,
+    id: post.id
   }));
 }
 

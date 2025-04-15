@@ -62,7 +62,7 @@ export default function BlogsPage() {
             <div className="lg:col-span-1">
               <div className="space-y-6 relative">
                 {/* Navigation Arrows */}
-                <div className="absolute right-0 top-0 flex space-x-2">
+                {/* <div className="absolute right-0 top-0 flex space-x-2">
                   <button
                     className="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
                     aria-label="Previous posts"
@@ -75,7 +75,7 @@ export default function BlogsPage() {
                   >
                     <ChevronRight size={18} />
                   </button>
-                </div>
+                </div> */}
 
                 {/* Blog Items */}
                 <BlogList posts={recentPosts} />
