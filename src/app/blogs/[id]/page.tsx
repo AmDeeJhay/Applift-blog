@@ -3,25 +3,24 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { blogPosts } from "@/lib/blog-data";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { JSX } from "react";
 
-// Generate static paths
+
+// Generate static path0s
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({ id: post.id }));
 }
 
-// Metadata generation
-export async function generateMetadata({
+// Metadata generation - Fixed by removing the unnecessary await
+export function generateMetadata({
   params,
 }: {
-  params: { id: string };
-}): Promise<Metadata> {
+  params: { id: string }
+}) {
   const post = blogPosts.find((post) => post.id === params.id);
 
   if (!post) {
     return {
-      title: "Blog Post Not Found",
+      title: "Blog Post Not Found"
     };
   }
 
@@ -35,11 +34,17 @@ export async function generateMetadata({
     },
   };
 }
+interface BlogPageParams {
+  params : Promise<{
+    id: string;
+  }>
+} 
 
 // Blog Post Page Component
-export default function BlogPost({ params }: { params: { id: string } }): JSX.Element {
-  const post = blogPosts.find((post) => post.id === params.id);
 
+export default async function BlogPost({ params }: BlogPageParams) {
+  const blogId = (await params).id
+  const post = blogPosts.find((post) => post.id === blogId);
   if (!post) {
     notFound();
   }
