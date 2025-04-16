@@ -11,12 +11,11 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
 }
 
 // Metadata generation - Fixed by removing the unnecessary await
-export function generateMetadata({
+export async function generateMetadata({
   params,
-}: {
-  params: { id: string }
-}) {
-  const post = blogPosts.find((post) => post.id === params.id);
+}: BlogPageParams) {
+  const blogId = (await params).id; 
+  const post = blogPosts.find((post) => post.id === blogId);
 
   if (!post) {
     return {
