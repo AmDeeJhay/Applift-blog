@@ -53,7 +53,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
   return (
     <main className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-4 md:px-8 py-4 border-b">
+      <nav className="flex items-center justify-between px-6 md:px-8 py-4 border-b">
         <Link href="/" className="flex items-center">
           <div className="relative w-8 h-8 bg-blue-600 rounded-md flex items-center justify-center">
             <span className="text-white text-sm font-bold">A</span>
@@ -81,7 +81,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
 
       {/* Blog Content */}
       <div className="container mx-auto px-4 py-8 max-w-8xl">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 px-11">
           {/* Back to blogs link */}
           <Link href="/blogs" className="inline-flex items-center text-blue-600">
             <ChevronLeft size={16} />
