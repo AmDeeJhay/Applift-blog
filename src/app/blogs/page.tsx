@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+// import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BlogList } from "@/components/blog/blog-list"
 import { FeaturedPost } from "@/components/blog/featured-post"
 import { RecentPosts } from "@/components/blog/recent-post"

@@ -22,14 +22,14 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
         return (
           <div 
             key={post.id} 
-            className={`${colSpan} rounded-lg p-3 bg-white`}
+            className={`${colSpan} border border-gray-300 rounded-lg p-3`}
           >
             {variant === "landscape" ? (
               <div className="flex flex-col">
                 {/* Image Section with Shadow */}
                 <div className="relative w-full mb-3">
-                  <div className="absolute w-full h-[300px] bg-gray-900 rounded-md bottom-0 translate-y-2 opacity-30"></div>
-                  <div className="relative w-full h-[300px] overflow-hidden rounded-md">
+                  <div className="absolute w-157 ml-40 h-[300px] bg-[#000] rounded-md bottom-0 translate-y-2 opacity-30"></div>
+                  <div className="relative w-192 h-[300px] overflow-hidden rounded-md">
                     <Image
                       src={post.image || "/assets/images/pics.png"}
                       alt={post.title}
@@ -64,13 +64,13 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
       {posts.slice(1, 5).map((post) => (
         <div 
           key={post.id} 
-          className="rounded-lg p-3 px-4 bg-white"
+          className=" border border-gray-300 rounded-lg p-3 px-4"
         >
           <div className="flex flex-col">
             {/* Image Section with Shadow */}
             <div className="relative w-full mb-3">
-              <div className="absolute w-full h-[200px] bg-gray-900 rounded-md bottom-0 translate-y-2 opacity-30"></div>
-              <div className="relative w-full h-[200px] overflow-hidden rounded-md">
+              <div className="absolute w-[270px] ml-24 h-[200px] bg-black rounded-md bottom-0 translate-y-2 opacity-30"></div>
+              <div className="relative w-[350px] h-[200px] overflow-hidden rounded-md">
                 <Image
                   src={post.image || "/assets/images/pics.png"}
                   alt={post.title}
