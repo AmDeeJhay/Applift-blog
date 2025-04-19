@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2 } from "lucide-react";
@@ -136,35 +137,35 @@ export default async function BlogPost({ params }: BlogPageParams) {
             <p className="text-lg mb-4">{post.excerpt}</p>
             
             <p>
-              When a fintech startup approached us with a bold vision—disrupting personal finance with a seamless, real-time app—we knew the stakes were high. Their idea was solid: simplify investing and wealth-building through automation and AI. But their technology challenges were daunting. Here's how our cloud engineering team designed and implemented a scalable platform that could grow affordably as their customer base expanded from day one. Here's how we pulled it off.
+              When a fintech startup approached us with a bold vision—disrupting personal finance with a seamless, real-time app—we knew the stakes were high. Their idea was solid: simplify investing and wealth-building through automation and AI. But their technology challenges were daunting. Here is how our cloud engineering team designed and implemented a scalable platform that could grow affordably as their customer base expanded from day one. Here is how we pulled it off.
             </p>
             
             <h3 className="font-bold text-xl mt-6 mb-4">Step 1: Defining the Blueprint</h3>
             
             <p>
-              The startup's requirements were clear but ambitious: low-latency transaction processing, compliance with financial regulations (think GDPR and PCI-DSS), and the ability to scale from 1,000 to 1 million users without breaking a sweat. We started with a whiteboard session—virtual, of course, thanks to 2025's hybrid work vibes—and mapped out the core needs:
+              The startups requirements were clear but ambitious: low-latency transaction processing, compliance with financial regulations (think GDPR and PCI-DSS), and the ability to scale from 1,000 to 1 million users without breaking a sweat. We started with a whiteboard session—virtual, of course, thanks to 2025 hybrid work vibes—and mapped out the core needs:
             </p>
             
             <ul className="list-disc pl-6 my-4">
-              <li>Microservices architecture: Monoliths don't scale well, and fintech demands flexibility.</li>
+              <li>Microservices architecture: Monoliths do not scale well, and fintech demands flexibility.</li>
               <li>Cloud provider: AWS won out for its robust financial services toolkit and global reach.</li>
               <li>Database: A mix of SQL (for structured financial data) and NoSQL (for user analytics).</li>
               <li>Security: Encryption everywhere, plus audit trails for compliance.</li>
             </ul>
             
             <p>
-              We settled on a modular design: transaction processing, user authentication, analytics, and notifications as separate services. This let us scale each piece independently—crucial when you don't know if users will swarm the app for payments or insights first.
+              We settled on a modular design: transaction processing, user authentication, analytics, and notifications as separate services. This let us scale each piece independently—crucial when you do not know if users will swarm the app for payments or insights first.
             </p>
 
             <h3 className="font-bold text-xl mt-6 mb-4">Step 2: Laying the Foundation with AWS</h3>
             
             <p>
-              We chose AWS as our cloud backbone, leveraged into its managed services to save time. Here's the stack we built:
+              We chose AWS as our cloud backbone, leveraged into its managed services to save time. Here is the stack we built:
             </p>
             
             <ul className="list-disc pl-6 my-4">
               <li>Amazon ECS for containerization: Portable, scalable, and helped with consistent deployment—perfect for a startup that needs to pivot quickly.</li>
-              <li>Amazon RDS (PostgreSQL): For transactional data. It's reliable, ACID-compliant, and handles heavy reads (like a change stream for analytics) as well as writes.</li>
+              <li>Amazon RDS (PostgreSQL): For transactional data. It is reliable, ACID-compliant, and handles heavy reads (like a change stream for analytics) as well as writes.</li>
               <li>Amazon DynamoDB: For user profiles and activity tracking, where flexible schemas matter.</li>
               <li>AWS Lambda: For event-driven processes like notifications and risk calculations.</li>
               <li>We deployed everything across multiple availability zones (AZs) for resilience. A hybrid app going down during a market shift? Not on our watch.</li>
@@ -179,7 +180,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
             <ul className="list-disc pl-6 my-4">
               <li>Read replicas: As user queries grew, our database could spawn read-only clones when load spiked.</li>
               <li>Connection pooling: Critical for managing database connections during traffic spikes.</li>
-              <li>Caching layer with Amazon ElastiCache: Frequently-accessed market data could skip the database entirely. The startup's "Market Dashboard" was blisteringly fast as a result.</li>
+              <li>Caching layer with Amazon ElastiCache: Frequently-accessed market data could skip the database entirely. The startups "Market Dashboard" was blisteringly fast as a result.</li>
             </ul>
 
             <h3 className="font-bold text-xl mt-6 mb-4">The Payoff</h3>

@@ -43,6 +43,7 @@ export default function BlogsPage() {
           <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
             {featuredPost && (
               <BlogCard
+                postId={featuredPost.id}
                 id={featuredPost.id}
                 title={featuredPost.title}
                 author={featuredPost.author}
@@ -71,6 +72,7 @@ export default function BlogsPage() {
               {regularPosts.map((post) => (
                 <BlogCard
                   key={post.id}
+                  postId={post.id}
                   id={post.id}
                   title={post.title}
                   author={post.author}
@@ -79,7 +81,7 @@ export default function BlogsPage() {
                 />
               ))}
             </div>
-          </div>
+          </div>S
         </div>
       </div>
     </main>

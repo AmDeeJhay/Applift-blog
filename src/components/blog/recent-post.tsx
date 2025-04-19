@@ -54,7 +54,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
                 </div>
               </div>
             ) : (
-              <BlogCard post={post} variant={variant} />
+              <BlogCard postId={post.id} post={post} variant={variant} />
             )}
           </div>
         );

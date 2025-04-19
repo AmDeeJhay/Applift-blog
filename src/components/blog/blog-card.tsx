@@ -3,9 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/blog-data";
-import { JSX } from "react";
+import { JSX, useState, useEffect } from "react";
 
 type BlogCardVariant = "compact" | "standard" | "featured" | "landscape";
+
+import { GetServerSidePropsContext } from "next";
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { id } = context.params || {};
+  const response = await fetch(`https://applift-blog-site-production.up.railway.app/blogs/${id}`);
+  const post = await response.json();
+
+  return {
+    props: {
+      post,
+    },
+  };
+}
 
 interface BlogCardProps {
   post?: BlogPost;
@@ -16,6 +30,11 @@ interface BlogCardProps {
   image?: string;
   excerpt?: string;
   featured?: boolean;
+  variant?: BlogCardVariant;
+}
+
+interface BlogCardProps {
+  postId: string;
   variant?: BlogCardVariant;
 }
 
@@ -38,9 +57,36 @@ export function BlogCard({
   const postImage = post?.image || image || "/placeholder.svg";
   const postExcerpt = post?.excerpt || excerpt || "";
   const isFeatured = post?.featured || featured;
+  const [loading, setLoading] = useState(true);
+  const [fetchedPost, setFetchedPost] = useState<BlogPost | null>(null);
+
+  useEffect(() => {
+    async function fetchPost() {
+      try {
+        const response = await fetch("https://applift-blog-site-production.up.railway.app/", {
+          cache: "no-store", // Ensures fresh data on every request
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch blog post");
+        }
+        const data = await response.json();
+        setFetchedPost(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPost();
+  }, [postId]);
 
   // Ensure we have the minimum required props
-  if (!postId) {
+  if (loading) {
+    return <div className="p-4 border rounded">Loading...</div>;
+  }
+
+  if (!postId || !fetchedPost) {
     console.warn("BlogCard: Missing required 'id' prop");
     return <div className="p-4 border rounded">Missing blog post data</div>;
   }
@@ -50,7 +96,7 @@ export function BlogCard({
       
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
-          src={postImage || "/assets/images/pics.png"}
+          src={postImage || "/assets/images/featured-img.png"}
           alt={postTitle || "Featured post"}
           fill
           className="object-cover"
@@ -58,7 +104,7 @@ export function BlogCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
         <div className="absolute top-4 left-4">
-          <span className="bg-black text-white text-xs px-3 py-1 rounded-full border-2 border-green-400">Featured</span>
+          <span className="bg-black text-white text-xs px-3 py-1 rounded-full border-2 border-[#CCFF6F]">Featured</span>
         </div>
         <Link href={`/blogs/${postId}`} className="absolute inset-0">
           <div className="absolute bottom-0 left-0 p-6 text-white">
@@ -80,7 +126,7 @@ export function BlogCard({
       <div className="flex flex-col h-[350px] max-w-[350px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
-            src={postImage || "/assets/images/pics.png"}
+            src={postImage || "/assets/images/sideA.png"}
             alt={postTitle || "Blog post"}
             fill
             className="object-cover hover:scale-105 transition-transform duration-300"
@@ -116,7 +162,7 @@ export function BlogCard({
       <div className="flex flex-col h-[250px] overflow-hidden  rounded-lg gap-4">
         <div className="relative w-full h-full overflow-hidden rounded-lg flex justify-center items-center">
           <Image
-            src={postImage || "/assets/images/pics.png"}
+            src={postImage || "/assets/images/sideA.png"}
             alt={postTitle || "Blog post"}
             fill
             className="object-cover hover:scale-105 transition-transform duration-300"
