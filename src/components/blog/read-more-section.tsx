@@ -2,53 +2,52 @@
 
 import type { BlogPost } from "@/lib/blog-data";
 import { BlogCard } from "./blog-card";
-import { JSX, useState } from "react";
+import { JSX } from "react";
+import Image from "next/image";
 
 interface ReadMoreSectionProps {
   posts: BlogPost[];
 }
 
 export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
-  // const [activeCategory, setActiveCategory] = useState<string>("all");
-
-  // Get unique categories
-  // const categories = ["All", ...Array.from(new Set(posts.map((post) => post.category || "Uncategorized")))];
-
-  // Filter posts by category
-  // const filteredPosts =
-  //   activeCategory === "all"
-  //   ? posts
-  //   : posts.filter(
-  //   (post) => post.category === activeCategory || (activeCategory === "Uncategorized" && !post.category)
-  // );
-
   return (
     <div>
-      {/* Category Buttons */}
-      {/* <div className="flex flex-wrap gap-2 mb-6">
-        {categories.map((category) => (
-          <button
-            key={category.toLowerCase()}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-              activeCategory === category.toLowerCase()
-                ? "bg-blue-600 text-white"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            }`}
-            onClick={() => setActiveCategory(category.toLowerCase())}
-          >
-            {category}
-          </button>
-        ))}
-      </div> */}
-  
       {/* Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 px-2">
         {posts.map((post) => (
           <div
             key={post.id}
-            className="border border-gray-300 rounded-lg overflow-hidden p-4" 
+            className="border border-gray-300 rounded-lg overflow-hidden p-4"
+            
           >
-            <BlogCard post={post} variant="standard" />
+            <div className="flex flex-col">
+              {/* Image Section with Shadow */}
+              <div className="relative w-full mb-3">
+                <div className="absolute inset-0 ml-3 bg-black opacity-30 rounded-md shadow-lg translate-y-2"></div>
+                <div className="relative w-86 h-[200px] overflow-hidden rounded-md">
+                  <Image
+                    src={post.image || "/assets/images/pics.png"}
+                    alt={post.title}
+                    fill 
+                    className="object-cover hover:scale-105 transition-transform duration-300 w-full h-full"
+                  />
+                </div>
+              </div>
+
+              {/* Title and Metadata Section */}
+              <div className="flex flex-col mt-2">
+                {/* Post Title */}
+                <h3 className="font-bold text-gray-800 text-lg break-words">
+                  {post.title}
+                </h3>
+
+                {/* Author and Date */}
+                <div className="text-sm text-gray-500 mt-1">
+                  <span>{post.author}</span>
+                  <span className="ml-2">{post.date}</span>
+                </div>
+              </div>
+            </div>
           </div>
         ))}
       </div>

@@ -47,6 +47,7 @@ export function BlogCard({
 
   if (variant === "featured") {
     return (
+      
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
           src={postImage || "/assets/images/pics.png"}
@@ -75,6 +76,7 @@ export function BlogCard({
 
   if (variant === "standard") {
     return (
+      
       <div className="flex flex-col h-[350px] max-w-[350px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
           <Image
@@ -150,7 +152,7 @@ export function BlogCard({
 
   // Default compact variant
   return (
-    <Link href={`/blogs/${postId}`} className="flex gap-4 group">
+    <Link href={`/blogs/${postId}`} className="flex gap-4 group"> 
       <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
         <Image
           src={postImage || "/assets/images/pics.png"}

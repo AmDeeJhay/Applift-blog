@@ -28,7 +28,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
               <div className="flex flex-col">
                 {/* Image Section with Shadow */}
                 <div className="relative w-full mb-3">
-                  <div className="absolute w-157 ml-40 h-[300px] bg-[#000] rounded-md bottom-0 translate-y-2 opacity-30"></div>
+                  <div className="absolute w-193 ml-3 h-[300px] bg-[#000] rounded-md bottom-0 translate-y-2 opacity-30"></div>
                   <div className="relative w-192 h-[300px] overflow-hidden rounded-md">
                     <Image
                       src={post.image || "/assets/images/pics.png"}
@@ -69,7 +69,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
           <div className="flex flex-col">
             {/* Image Section with Shadow */}
             <div className="relative w-full mb-3">
-              <div className="absolute w-[270px] ml-24 h-[200px] bg-black rounded-md bottom-0 translate-y-2 opacity-30"></div>
+              <div className="absolute w-[350px] ml-3 h-[200px] bg-black rounded-md bottom-0 translate-y-2 opacity-30"></div>
               <div className="relative w-[350px] h-[200px] overflow-hidden rounded-md">
                 <Image
                   src={post.image || "/assets/images/pics.png"}
