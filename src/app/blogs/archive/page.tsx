@@ -68,7 +68,7 @@ export default function ArchivePage(): JSX.Element {
                   <div className="flex gap-4">
                     <div className="relative w-20 h-20 flex-shrink-0 overflow-hidden rounded-md">
                       <Image
-                        src={post.image || "/placeholder.svg"}
+                        src={post.image || "/assets/images/sideA.png"}
                         alt={post.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"

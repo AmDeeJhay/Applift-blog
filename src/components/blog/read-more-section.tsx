@@ -26,7 +26,7 @@ export function ReadMoreSection({ posts }: ReadMoreSectionProps): JSX.Element {
                 <div className="absolute inset-0 ml-3 bg-black opacity-30 rounded-md shadow-lg translate-y-2"></div>
                 <div className="relative w-86 h-[200px] overflow-hidden rounded-md">
                   <Image
-                    src={post.image || "/assets/images/pics.png"}
+                    src={post.image || "/assets/images/sideA.png"}
                     alt={post.title}
                     fill 
                     className="object-cover hover:scale-105 transition-transform duration-300 w-full h-full"

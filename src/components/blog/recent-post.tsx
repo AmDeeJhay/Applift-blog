@@ -31,7 +31,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
                   <div className="absolute w-193 ml-3 h-[300px] bg-[#000] rounded-md bottom-0 translate-y-2 opacity-30"></div>
                   <div className="relative w-192 h-[300px] overflow-hidden rounded-md">
                     <Image
-                      src={post.image || "/assets/images/pics.png"}
+                      src={post.image || "/assets/images/sideA.png"}
                       alt={post.title}
                       fill
                       className="object-cover hover:scale-105 transition-transform duration-300"
@@ -72,7 +72,7 @@ export function RecentPosts({ posts }: RecentPostsProps): JSX.Element {
               <div className="absolute w-[350px] ml-3 h-[200px] bg-black rounded-md bottom-0 translate-y-2 opacity-30"></div>
               <div className="relative w-[350px] h-[200px] overflow-hidden rounded-md">
                 <Image
-                  src={post.image || "/assets/images/pics.png"}
+                  src={post.image || "/assets/images/sideA.png"}
                   alt={post.title}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"

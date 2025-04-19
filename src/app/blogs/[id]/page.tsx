@@ -124,7 +124,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
           {/* Featured Image */}
           <div className="relative w-full aspect-video mb-6">
             <Image
-              src={post.image || "/placeholder.svg"}
+              src={post.image || "/assets/images/featured-img.png"}
               alt={post.title}
               fill
               className="object-cover rounded-lg"
