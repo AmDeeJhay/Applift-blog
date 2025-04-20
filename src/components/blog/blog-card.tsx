@@ -47,7 +47,7 @@ export function BlogCard({
       async function fetchPost() {
         try {
           // Update this URL to your actual API endpoint
-          const response = await fetch(`/https://applift-blog-site-production.up.railway.app/blogs/${postId}`);
+          const response = await fetch(`/https://applift-blog-site-production.up.railway.app/`);
           if (!response.ok) {
             throw new Error("Failed to fetch blog post");
           }
