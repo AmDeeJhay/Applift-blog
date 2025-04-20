@@ -42,12 +42,12 @@ export function BlogCard({
   const [fetchedPost, setFetchedPost] = useState<BlogPost | null>(post || null);
 
   useEffect(() => {
-    // Only fetch if we don't already have the post data and we have an ID
     if (!post && postId) {
       async function fetchPost() {
         try {
-          // Update this URL to your actual API endpoint
-          const response = await fetch(`/https://applift-blog-site-production.up.railway.app/`);
+         
+          const response = await fetch(`https://applift-blog-site-production.up.railway.app/`);
+          console.log("Response:", response);
           if (!response.ok) {
             throw new Error("Failed to fetch blog post");
           }
@@ -64,10 +64,10 @@ export function BlogCard({
     }
   }, [post, postId]);
 
-  // Use either the provided post or the fetched post
+  
   const displayPost = post || fetchedPost;
 
-  // Show loading state
+  
   if (loading) {
     return <div className="p-4 border rounded animate-pulse bg-gray-100">Loading...</div>;
   }
