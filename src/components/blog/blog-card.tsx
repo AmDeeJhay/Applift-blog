@@ -11,7 +11,9 @@ import { GetServerSidePropsContext } from "next";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { id } = context.params || {};
-  const response = await fetch(`https://applift-blog-site-production.up.railway.app/`);
+  const response = await fetch("https://applift-blog-site-production.up.railway.app/", {
+    cache: "no-store", // Ensures fresh data on every request
+  });
   const post = await response.json();
 
   return {
