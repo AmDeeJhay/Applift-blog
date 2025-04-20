@@ -2,11 +2,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2 } from "lucide-react";
-import { blogPosts } from "@/lib/blog-data";
+import { FetchPosts } from "@/lib/blog-data";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  image: string;
+  category: string;
+  author: string;
+  date: string;
+}
 import { notFound } from "next/navigation";
 
 // Generate static paths
 export async function generateStaticParams(): Promise<{ id: string }[]> {
+  const blogPosts: BlogPost[] = Array.isArray(await FetchPosts()) ? await FetchPosts() : [];
+  if (!blogPosts || !Array.isArray(blogPosts)) {
+    throw new Error("Failed to fetch blog posts");
+  }
   return blogPosts.map((post) => ({ id: post.id }));
 }
 
@@ -14,9 +28,14 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
 export async function generateMetadata({
   params,
 }: BlogPageParams) {
+  const blogPost = await FetchPosts();
+  if (!blogPost || !Array.isArray(blogPost)) {
+    return {
+      title: "Blog Post Not Found"
+    };
+  }
   const blogId = (await params).id; 
-  const post = blogPosts.find((post) => post.id === blogId);
-
+  const post = blogPost.find((post) => post.id === blogId);
   if (!post) {
     return {
       title: "Blog Post Not Found"
@@ -35,14 +54,19 @@ export async function generateMetadata({
 }
 
 interface BlogPageParams {
-  params: Promise<{
+  params: {
     id: string;
-  }>
-} 
+  };
+}
 
 export default async function BlogPost({ params }: BlogPageParams) {
   const blogId = (await params).id
-  const post = blogPosts.find((post) => post.id === blogId);
+  const blogPosts: BlogPost[] = (await FetchPosts()) || [];
+  if (!blogPosts || !Array.isArray(blogPosts)) {
+    throw new Error("Failed to fetch blog posts");
+  }
+  return blogPosts.map((post) => ({ id: post.id }));
+  const post = blogPosts?.find((post) => post.id === blogId);
   if (!post) {
     notFound();
   }

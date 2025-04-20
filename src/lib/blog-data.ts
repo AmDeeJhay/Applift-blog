@@ -1,3 +1,8 @@
+"use server"
+
+import axios from "axios";
+const API_URL = process.env.API_URL;
+
 export interface BlogPost {
     id: string
     title: string
@@ -105,5 +110,15 @@ export interface BlogPost {
     category: "Security",
   },
 ]
-  
-  
+
+// Fetch blog post by ID using Axios
+export async function FetchPosts(): Promise<BlogPost | undefined> {
+  try {
+    const response = await axios.get(`${API_URL}/posts`);
+    console.log("Fetched Blog Post:", response.data); // Log the fetched blog post
+    return response.data; // Return the blog post data
+  } catch (error) {
+    console.error("Error fetching blog post:", error);
+    return undefined; // Return undefined if there's an error
+  }
+}
