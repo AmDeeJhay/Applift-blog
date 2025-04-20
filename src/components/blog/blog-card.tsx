@@ -7,22 +7,6 @@ import { JSX, useState, useEffect } from "react";
 
 type BlogCardVariant = "compact" | "standard" | "featured" | "landscape";
 
-import { GetServerSidePropsContext } from "next";
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { id } = context.params || {};
-  const response = await fetch("https://applift-blog-site-production.up.railway.app/", {
-    cache: "no-store", // Ensures fresh data on every request
-  });
-  const post = await response.json();
-
-  return {
-    props: {
-      post,
-    },
-  };
-}
-
 interface BlogCardProps {
   post?: BlogPost;
   id?: string;
@@ -32,11 +16,6 @@ interface BlogCardProps {
   image?: string;
   excerpt?: string;
   featured?: boolean;
-  variant?: BlogCardVariant;
-}
-
-interface BlogCardProps {
-  postId: string;
   variant?: BlogCardVariant;
 }
 
@@ -59,43 +38,48 @@ export function BlogCard({
   const postImage = post?.image || image || "/placeholder.svg";
   const postExcerpt = post?.excerpt || excerpt || "";
   const isFeatured = post?.featured || featured;
-  const [loading, setLoading] = useState(true);
-  const [fetchedPost, setFetchedPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(!post && !!postId);
+  const [fetchedPost, setFetchedPost] = useState<BlogPost | null>(post || null);
 
   useEffect(() => {
-    async function fetchPost() {
-      try {
-        const response = await fetch("https://applift-blog-site-production.up.railway.app/", {
-          cache: "no-store", // Ensures fresh data on every request
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch blog post");
+    // Only fetch if we don't already have the post data and we have an ID
+    if (!post && postId) {
+      async function fetchPost() {
+        try {
+          // Update this URL to your actual API endpoint
+          const response = await fetch(`/https://applift-blog-site-production.up.railway.app/blogs/${postId}`);
+          if (!response.ok) {
+            throw new Error("Failed to fetch blog post");
+          }
+          const data = await response.json();
+          setFetchedPost(data);
+        } catch (error) {
+          console.error("Error fetching blog post:", error);
+        } finally {
+          setLoading(false);
         }
-        const data = await response.json();
-        setFetchedPost(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
       }
+
+      fetchPost();
     }
+  }, [post, postId]);
 
-    fetchPost();
-  }, [postId]);
+  // Use either the provided post or the fetched post
+  const displayPost = post || fetchedPost;
 
-  // Ensure we have the minimum required props
+  // Show loading state
   if (loading) {
-    return <div className="p-4 border rounded">Loading...</div>;
+    return <div className="p-4 border rounded animate-pulse bg-gray-100">Loading...</div>;
   }
 
-  if (!postId || !fetchedPost) {
-    console.warn("BlogCard: Missing required 'id' prop");
-    return <div className="p-4 border rounded">Missing blog post data</div>;
+  // Handle missing data case
+  if (!displayPost && postId) {
+    return <div className="p-4 border rounded text-red-500">Error loading blog post</div>;
   }
 
+  // Featured variant
   if (variant === "featured") {
     return (
-      
       <div className="relative h-[400px] w-full overflow-hidden rounded-lg">
         <Image
           src={postImage || "/assets/images/featured-img.png"}
@@ -122,24 +106,28 @@ export function BlogCard({
     );
   }
 
+  // Standard variant
   if (variant === "standard") {
     return (
-      
       <div className="flex flex-col h-[350px] max-w-[350px] mx-auto">
         <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-4">
-          <Image
-            src={postImage || "/assets/images/sideA.png"}
-            alt={postTitle || "Blog post"}
-            fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
-          />
-          {post?.category && (
-            <div className="absolute top-3 left-3">
-              <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
-                {post.category}
-              </span>
-            </div>
-          )}
+          {/* Shadow effect underneath image */}
+          <div className="absolute w-full aspect-video bg-gray-900 rounded-lg bottom-0 translate-y-2 opacity-30"></div>
+          <div className="relative w-full aspect-video overflow-hidden rounded-lg">
+            <Image
+              src={postImage || "/assets/images/sideA.png"}
+              alt={postTitle || "Blog post"}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+            />
+            {displayPost?.category && (
+              <div className="absolute top-3 left-3">
+                <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
+                  {displayPost.category}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex-1 flex flex-col">
           <Link href={`/blogs/${postId}`} className="group">
@@ -157,57 +145,62 @@ export function BlogCard({
     );
   }
 
-
+  // Landscape variant
   if (variant === "landscape") {
     return (
       <div className="justify-between flex p-4">
-      <div className="flex flex-col h-[250px] overflow-hidden  rounded-lg gap-4">
-        <div className="relative w-full h-full overflow-hidden rounded-lg flex justify-center items-center">
-          <Image
-            src={postImage || "/assets/images/sideA.png"}
-            alt={postTitle || "Blog post"}
-            fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
-          />
-          {post?.category && (
-            <div className="absolute top-3 left-3">
-              <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
-                {post.category}
-              </span>
+        <div className="flex flex-col h-[250px] overflow-hidden rounded-lg gap-4">
+          <div className="relative w-full h-full overflow-hidden rounded-lg flex justify-center items-center">
+            {/* Shadow effect underneath image */}
+            <div className="absolute w-full h-full bg-gray-900 rounded-lg bottom-0 translate-y-2 opacity-30"></div>
+            <div className="relative w-full h-full overflow-hidden rounded-lg">
+              <Image
+                src={postImage || "/assets/images/sideA.png"}
+                alt={postTitle || "Blog post"}
+                fill
+                className="object-cover hover:scale-105 transition-transform duration-300"
+              />
             </div>
-          )}
-        </div>
-        <div className="flex flex-col justify-between flex-1 p-3">
-          <div>
-            <Link href={`/blogs/${postId}`} className="group">
-              <h3 className="font-bold text-base mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
-                {postTitle}
-              </h3>
-            </Link>
+            {displayPost?.category && (
+              <div className="absolute top-3 left-3">
+                <span className="bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
+                  {displayPost.category}
+                </span>
+              </div>
+            )}
           </div>
-          <div className="text-sm text-right">
-            <span className="text-blue-600">{postAuthor}</span>
-            <span className="text-gray-500 ml-2">{postDate}</span>
+          <div className="flex flex-col justify-between flex-1 p-3">
+            <div>
+              <Link href={`/blogs/${postId}`} className="group">
+                <h3 className="font-bold text-base mb-1 group-hover:text-blue-600 transition-colors line-clamp-2">
+                  {postTitle}
+                </h3>
+              </Link>
+            </div>
+            <div className="text-sm text-right">
+              <span className="text-blue-600">{postAuthor}</span>
+              <span className="text-gray-500 ml-2">{postDate}</span>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     );
   }
-  
-  
-  
 
   // Default compact variant
   return (
     <Link href={`/blogs/${postId}`} className="flex gap-4 group"> 
       <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
-        <Image
-          src={postImage || "/assets/images/pics.png"}
-          alt={postTitle || "Blog post"}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        {/* Shadow effect underneath image */}
+        <div className="absolute w-24 h-24 bg-gray-900 rounded-md bottom-0 translate-y-1 opacity-30"></div>
+        <div className="relative w-24 h-24 overflow-hidden rounded-md">
+          <Image
+            src={postImage || "/assets/images/pics.png"}
+            alt={postTitle || "Blog post"}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
       </div>
       <div className="flex-1">
         <h3 className="font-medium text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
