@@ -5,6 +5,8 @@ import { ChevronLeft, ThumbsUp, Share2 } from "lucide-react";
 // import { blogPosts } from "@/lib/blog-data";
 import { blogPosts } from "@/lib/blog-data"; 
 import { notFound } from "next/navigation";
+import CommentSection from "@/components/comments/comments";
+
 
 interface BlogPost {
   id: string;
@@ -66,6 +68,8 @@ interface BlogPageParams {
     id: string;
   }>
 }
+
+
 
 export default async function BlogPost({ params }: BlogPageParams) {
   const blogId = (await params).id 
@@ -257,6 +261,11 @@ export default async function BlogPost({ params }: BlogPageParams) {
           </div>
         )}
       </div>
+
+        
+      {/* Comments Section */}  
+      <CommentSection postId={blogId} /> 
+      
     </main>
   );
 }

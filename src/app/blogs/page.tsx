@@ -107,6 +107,7 @@ export default function BlogsPage() {
         </section>
       </div>
 
+
       {/* Footer */}
       <Footer />
     </main>
