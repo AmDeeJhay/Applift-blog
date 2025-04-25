@@ -51,6 +51,7 @@ export default function BlogsPage() {
                 image={featuredPost.image}
                 featured={true}
                 excerpt={featuredPost.excerpt}
+                variant="featured"
               />
             )}
           </div>

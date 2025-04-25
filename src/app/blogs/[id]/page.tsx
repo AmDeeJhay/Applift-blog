@@ -2,7 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2 } from "lucide-react";
-import { FetchPosts } from "@/lib/blog-data";
+// import { blogPosts } from "@/lib/blog-data";
+import { blogPosts } from "@/lib/blog-data"; 
+import { notFound } from "next/navigation";
 
 interface BlogPost {
   id: string;
@@ -13,29 +15,35 @@ interface BlogPost {
   author: string;
   date: string;
 }
-import { notFound } from "next/navigation";
+
 
 // Generate static paths
 export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const blogPosts: BlogPost[] = Array.isArray(await FetchPosts()) ? await FetchPosts() : [];
-  if (!blogPosts || !Array.isArray(blogPosts)) {
-    throw new Error("Failed to fetch blog posts");
-  }
-  return blogPosts.map((post) => ({ id: post.id }));
+  return blogPosts.map((post) => ({
+    id: post.id 
+  }));
+// try {
+//   const blogPosts = await FetchPosts(); // Fetch posts from your API or data source
+//   return blogPosts.map((post) => ({ 
+//     id: post.id 
+//   }));
+// } catch (error) {
+//   console.error("Error generating static paths:", error);
+//   // Fall back to static data if API fetch fails
+//   return fallbackPosts.map((post) => ({
+//     id: post.id
+//   }));
 }
+
 
 // Metadata generation
 export async function generateMetadata({
   params,
 }: BlogPageParams) {
-  const blogPost = await FetchPosts();
-  if (!blogPost || !Array.isArray(blogPost)) {
-    return {
-      title: "Blog Post Not Found"
-    };
-  }
-  const blogId = (await params).id; 
-  const post = blogPost.find((post) => post.id === blogId);
+  const blogId = (await params).id;
+  // const blogPosts = await FetchPosts(); // Fetch posts from your API or data source 
+  const post = blogPosts.find((post) => post.id === blogId);
+
   if (!post) {
     return {
       title: "Blog Post Not Found"
@@ -54,19 +62,16 @@ export async function generateMetadata({
 }
 
 interface BlogPageParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>
 }
 
 export default async function BlogPost({ params }: BlogPageParams) {
-  const blogId = (await params).id
-  const blogPosts: BlogPost[] = (await FetchPosts()) || [];
-  if (!blogPosts || !Array.isArray(blogPosts)) {
-    throw new Error("Failed to fetch blog posts");
-  }
-  return blogPosts.map((post) => ({ id: post.id }));
-  const post = blogPosts?.find((post) => post.id === blogId);
+  const blogId = (await params).id 
+  // const blogPosts = await FetchPosts(); // Fetch posts from your API or data source
+  const post = blogPosts.find((post) => post.id === blogId);
+
   if (!post) {
     notFound();
   }

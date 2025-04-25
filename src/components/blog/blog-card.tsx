@@ -9,6 +9,7 @@ type BlogCardVariant = "compact" | "standard" | "featured" | "landscape";
 
 interface BlogCardProps {
   post?: BlogPost;
+  postId?: string; // Optional postId prop for fetching posts
   id?: string;
   title?: string;
   author?: string;
