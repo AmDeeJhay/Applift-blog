@@ -4,21 +4,30 @@ import { BlogList } from "@/components/blog/blog-list"
 import { FeaturedPost } from "@/components/blog/featured-post"
 import { RecentPosts } from "@/components/blog/recent-post"
 import { ReadMoreSection } from "@/components/blog/read-more-section"
-import { blogPosts } from "@/lib/blog-data"
+import { FetchPosts } from "@/lib/blog-data"
 import { Footer } from "@/components/layout/footer"
 
-export default function BlogsPage() {
+export default async function BlogsPage() {
+  const blogPosts: BlogPost[] = (await FetchPosts()) || [];
   // Get featured post
-  const featuredPost = blogPosts.find((post) => post.featured)
+  const featuredPost = blogPosts?.find((post) => post.featured)
 
   // Get recent posts (excluding featured)
-  const recentPosts = blogPosts
-    .filter((post) => !post.featured)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+  interface BlogPost {
+    id: string;
+    title: string;
+    content: string;
+    date: string;
+    featured: boolean;
+  }
+
+  const recentPosts = blogPosts?
+    .filter((post: BlogPost) => !post.featured)
+    .sort((a: BlogPost, b: BlogPost) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
 
   // Get remaining posts for "Read More" section
-  const readMorePosts = blogPosts.filter((post) => !post.featured && !recentPosts.includes(post)).slice(0, 6)
+  const readMorePosts = blogPosts?.filter((post) => !post.featured && !recentPosts.includes(post)).slice(0, 6)
 
   return (
     <main className="min-h-screen bg-white">
