@@ -22,6 +22,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   useEffect(() => {
     fetchComments();
   }, [postId]);
+  
 
   // Simulated polling for new comments (in a real app, you might use WebSockets)
   useEffect(() => {
