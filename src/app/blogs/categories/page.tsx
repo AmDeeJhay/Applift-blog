@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export async function CategoriesPage(): Promise<JSX.Element> {
   const blogPosts = await FetchPosts() || []
-  // Get all categories and count posts in each
+  // Get all categories and count posts
   const categories = blogPosts.reduce<Record<string, number>>((acc, post) => {
     const category = post.category || "Uncategorized"
     if (!acc[category]) {
