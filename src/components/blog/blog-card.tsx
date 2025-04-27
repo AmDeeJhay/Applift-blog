@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/blog-data";
 import { JSX, useState, useEffect } from "react";
+import { getPostById } from "@/lib/api-functions"; // Import the API function
 
 type BlogCardVariant = "compact" | "standard" | "featured" | "landscape";
 
@@ -41,21 +42,22 @@ export function BlogCard({
   const isFeatured = post?.featured || featured;
   const [loading, setLoading] = useState(!post && !!postId);
   const [fetchedPost, setFetchedPost] = useState<BlogPost | null>(post || null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!post && postId) {
       async function fetchPost() {
         try {
-         
-          const response = await fetch(`https://applift-blog-site-production.up.railway.app/`);
-          console.log("Response:", response);
-          if (!response.ok) {
-            throw new Error("Failed to fetch blog post");
+          setLoading(true);
+          const data = await getPostById(postId);
+          if (data) {
+            setFetchedPost(data);
+          } else {
+            setError("Post not found");
           }
-          const data = await response.json();
-          setFetchedPost(data);
         } catch (error) {
           console.error("Error fetching blog post:", error);
+          setError("Failed to load post");
         } finally {
           setLoading(false);
         }
@@ -75,7 +77,7 @@ export function BlogCard({
 
   // Handle missing data case
   if (!displayPost && postId) {
-    return <div className="p-4 border rounded text-red-500">Error loading blog post</div>;
+    return <div className="p-4 border rounded text-red-500">{error || "Error loading blog post"}</div>;
   }
 
   // Featured variant

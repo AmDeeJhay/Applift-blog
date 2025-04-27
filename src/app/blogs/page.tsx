@@ -3,7 +3,7 @@ import Link from "next/link"
 import { BlogList } from "@/components/blog/blog-list"
 import { FeaturedPost } from "@/components/blog/featured-post"
 import { RecentPosts } from "@/components/blog/recent-post"
-import { ReadMoreSection } from "@/components/blog/read-more-section"
+import  ReadMoreSection from "@/components/blog/read-more-section"
 import { blogPosts } from "@/lib/blog-data"
 import { Footer } from "@/components/layout/footer"
 
@@ -15,7 +15,7 @@ export default function BlogsPage() {
   const recentPosts = blogPosts
     .filter((post) => !post.featured)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3)
+    .slice(0, 5)
 
   // Get remaining posts for "Read More" section
   const readMorePosts = blogPosts.filter((post) => !post.featured && !recentPosts.includes(post)).slice(0, 6)

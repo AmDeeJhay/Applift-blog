@@ -1,7 +1,6 @@
-// "use server"
-
+// lib/api-functions.ts
 import axios from "axios";
-const API_URL = process.env.API_URL;
+const API_URL = process.env.API_URL 
 
 export interface BlogPost {
   id: string
@@ -20,68 +19,15 @@ export interface Comment {
   postId: string
   author: string
   content: string
-  date: string
+  createdAt: string
+  replies?: CommentReply[]
 }
 
-// Define sample blog posts array that can be used as fallback when API fails
-export const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "Scaling Cloud Infrastructure for Fintech Startups",
-    author: "Jane Smith",
-    date: "April 15, 2025",
-    image: "/assets/images/blog-1.jpg",
-    excerpt: "How we helped a fintech startup scale their cloud infrastructure to handle millions of transactions while maintaining security and compliance.",
-    category: "Cloud Engineering",
-    featured: true
-  },
-  {
-    id: "2",
-    title: "AI-Powered Data Analytics for E-commerce",
-    author: "John Doe",
-    date: "April 10, 2025",
-    image: "/assets/images/blog-2.jpg",
-    excerpt: "Implementing machine learning algorithms to optimize inventory management and improve customer experience.",
-    category: "AI & Machine Learning"
-  },
-  {
-    id: "3",
-    title: "Building Resilient Microservices Architecture",
-    author: "Sarah Johnson",
-    date: "April 5, 2025",
-    image: "/assets/images/blog-3.jpg",
-    excerpt: "Best practices for designing and implementing microservices that can withstand failures and scale efficiently.",
-    category: "Architecture"
-  },
-  {
-    id: "4",
-    title: "DevOps Transformation for Legacy Systems",
-    author: "Mike Chen",
-    date: "March 28, 2025",
-    image: "/assets/images/blog-4.jpg",
-    excerpt: "How we helped a traditional enterprise modernize their development pipeline and adopt DevOps practices.",
-    category: "DevOps"
-  },
-  {
-    id: "5",
-    title: "Securing API Gateways in Multi-cloud Environments",
-    author: "Alex Kumar",
-    date: "March 20, 2025",
-    image: "/assets/images/blog-5.jpg",
-    excerpt: "Strategies for implementing robust security controls for API gateways across different cloud providers.",
-    category: "Security"
-  }
-];
-
-// Helper functions related to blog data
-export function getRelatedPosts(category: string, excludeId: string): BlogPost[] {
-  return blogPosts
-    .filter(post => post.category === category && post.id !== excludeId)
-    .slice(0, 3);
-}
-
-export function getFeaturedPosts(): BlogPost[] {
-  return blogPosts.filter(post => post.featured);
+export interface CommentReply {
+  id: string
+  author: string
+  content: string
+  createdAt: string
 }
 
 // === POSTS ===
@@ -107,6 +53,18 @@ export async function getPostById(postId: string) {
   } catch (error) {
     console.error(`Error fetching post with ID ${postId}:`, error);
     return undefined;
+  }
+}
+
+// GET /posts/related/{category}/{postId} - Get related posts by category (excluding current post)
+export async function getRelatedPosts(category: string, currentPostId: string) {
+  try {
+    const response = await axios.get(`${API_URL}/posts/related/${category}/${currentPostId}`);
+    console.log("Fetched related posts:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching related posts:`, error);
+    return [];
   }
 }
 
@@ -149,13 +107,25 @@ export async function deletePost(postId: string) {
 // === COMMENTS ===
 
 // POST /comments/ - Create a new comment
-export async function createComment(commentData: Omit<Comment, "id">) {
+export async function createComment(commentData: {author: string, content: string, postId: string}) {
   try {
     const response = await axios.post(`${API_URL}/comments`, commentData);
     console.log("Created comment:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating comment:", error);
+    throw error;
+  }
+}
+
+// POST /comments/{commentId}/replies - Create a reply to a comment
+export async function createCommentReply(commentId: string, replyData: {author: string, content: string}) {
+  try {
+    const response = await axios.post(`${API_URL}/comments/${commentId}/replies`, replyData);
+    console.log("Created comment reply:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating comment reply:", error);
     throw error;
   }
 }
@@ -198,14 +168,14 @@ export async function deleteComment(commentId: string) {
 
 // === DEFAULT ===
 
-// GET / - Root endpoint
-export async function getRoot() {
+// GET / - Root endpoint health check
+export async function getApiStatus() {
   try {
     const response = await axios.get(`${API_URL}/`);
-    console.log("Root API response:", response.data);
+    console.log("API status:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error accessing root endpoint:", error);
-    return undefined;
+    console.error("Error checking API status:", error);
+    return { status: "offline" };
   }
 }

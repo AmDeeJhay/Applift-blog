@@ -2,22 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react";
-import { blogPosts } from "@/lib/blog-data"; 
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/comments/comments";
+import { getPostById, getCommentsByPostId } from "@/lib/api-functions"; // Import API functions
+import { blogPosts } from "@/lib/blog-data"; // Import blogPosts from blog-data
 
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  image: string;
-  category: string;
-  author: string;
-  date: string;
-}
-
-// Generate static paths
-export async function generateStaticParams(): Promise<{ id: string }[]> {
+// Generate static paths - can still use local data for build time
+export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     id: post.id 
   }));
@@ -28,7 +19,15 @@ export async function generateMetadata({
   params,
 }: BlogPageParams) {
   const blogId = (await params).id;
-  const post = blogPosts.find((post) => post.id === blogId);
+  
+  // Try to get post from API first, fall back to local data
+  let post;
+  try {
+    post = await getPostById(blogId);
+  } catch (error) {
+    // Fall back to local data if API fails
+    post = blogPosts.find((post) => post.id === blogId);
+  }
 
   if (!post) {
     return {
@@ -54,13 +53,22 @@ interface BlogPageParams {
 }
 
 export default async function BlogPost({ params }: BlogPageParams) {
-  const blogId = (await params).id 
-  const post = blogPosts.find((post) => post.id === blogId);
+  const blogId = (await params).id;
+  
+  // Try to get post from API first
+  let post;
+  try {
+    post = await getPostById(blogId);
+  } catch (error) {
+    // Fall back to local data if API fails
+    post = blogPosts.find((post) => post.id === blogId);
+  }
 
   if (!post) {
     notFound();
   }
 
+  // Find related posts - could also use API but using local data for simplicity
   const relatedPosts = blogPosts
     .filter((p) => p.id !== post.id && p.category === post.category)
     .slice(0, 3);
@@ -165,71 +173,77 @@ export default async function BlogPost({ params }: BlogPageParams) {
             <div className="prose prose-lg max-w-none">
               <p className="text-xl text-gray-700 mb-6 leading-relaxed">{post.excerpt}</p>
               
-              <p className="text-gray-700">
-                When a fintech startup approached us with a bold vision—disrupting personal finance with a seamless, real-time app—we knew the stakes were high. Their idea was solid: simplify investing and wealth-building through automation and AI. But their technology challenges were daunting. Here is how our cloud engineering team designed and implemented a scalable platform that could grow affordably as their customer base expanded from day one. Here is how we pulled it off.
-              </p>
+              {post.content ? (
+                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+              ) : (
+                <>
+                  <p className="text-gray-700">
+                    When a fintech startup approached us with a bold vision—disrupting personal finance with a seamless, real-time app—we knew the stakes were high. Their idea was solid: simplify investing and wealth-building through automation and AI. But their technology challenges were daunting. Here is how our cloud engineering team designed and implemented a scalable platform that could grow affordably as their customer base expanded from day one. Here is how we pulled it off.
+                  </p>
+                  
+                  <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 1: Defining the Blueprint</h3>
+                  
+                  <p className="text-gray-700">
+                    The startups requirements were clear but ambitious: low-latency transaction processing, compliance with financial regulations (think GDPR and PCI-DSS), and the ability to scale from 1,000 to 1 million users without breaking a sweat. We started with a whiteboard session—virtual, of course, thanks to 2025 hybrid work vibes—and mapped out the core needs:
+                  </p>
+                  
+                  <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
+                    <li>Microservices architecture: Monoliths do not scale well, and fintech demands flexibility.</li>
+                    <li>Cloud provider: AWS won out for its robust financial services toolkit and global reach.</li>
+                    <li>Database: A mix of SQL (for structured financial data) and NoSQL (for user analytics).</li>
+                    <li>Security: Encryption everywhere, plus audit trails for compliance.</li>
+                  </ul>
               
-              <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 1: Defining the Blueprint</h3>
-              
-              <p className="text-gray-700">
-                The startups requirements were clear but ambitious: low-latency transaction processing, compliance with financial regulations (think GDPR and PCI-DSS), and the ability to scale from 1,000 to 1 million users without breaking a sweat. We started with a whiteboard session—virtual, of course, thanks to 2025 hybrid work vibes—and mapped out the core needs:
-              </p>
-              
-              <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
-                <li>Microservices architecture: Monoliths do not scale well, and fintech demands flexibility.</li>
-                <li>Cloud provider: AWS won out for its robust financial services toolkit and global reach.</li>
-                <li>Database: A mix of SQL (for structured financial data) and NoSQL (for user analytics).</li>
-                <li>Security: Encryption everywhere, plus audit trails for compliance.</li>
-              </ul>
-              
-              <p className="text-gray-700">
-                We settled on a modular design: transaction processing, user authentication, analytics, and notifications as separate services. This let us scale each piece independently—crucial when you do not know if users will swarm the app for payments or insights first.
-              </p>
+                  <p className="text-gray-700">
+                    We settled on a modular design: transaction processing, user authentication, analytics, and notifications as separate services. This let us scale each piece independently—crucial when you do not know if users will swarm the app for payments or insights first.
+                  </p>
 
-              <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 2: Laying the Foundation with AWS</h3>
+                  <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 2: Laying the Foundation with AWS</h3>
               
-              <p className="text-gray-700">
-                We chose AWS as our cloud backbone, leveraged into its managed services to save time. Here is the stack we built:
-              </p>
+                  <p className="text-gray-700">
+                    We chose AWS as our cloud backbone, leveraged into its managed services to save time. Here is the stack we built:
+                  </p>
               
-              <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
-                <li>Amazon ECS for containerization: Portable, scalable, and helped with consistent deployment—perfect for a startup that needs to pivot quickly.</li>
-                <li>Amazon RDS (PostgreSQL): For transactional data. It is reliable, ACID-compliant, and handles heavy reads (like a change stream for analytics) as well as writes.</li>
-                <li>Amazon DynamoDB: For user profiles and activity tracking, where flexible schemas matter.</li>
-                <li>AWS Lambda: For event-driven processes like notifications and risk calculations.</li>
-                <li>We deployed everything across multiple availability zones (AZs) for resilience. A hybrid app going down during a market shift? Not on our watch.</li>
-              </ul>
+                  <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
+                    <li>Amazon ECS for containerization: Portable, scalable, and helped with consistent deployment—perfect for a startup that needs to pivot quickly.</li>
+                    <li>Amazon RDS (PostgreSQL): For transactional data. It is reliable, ACID-compliant, and handles heavy reads (like a change stream for analytics) as well as writes.</li>
+                    <li>Amazon DynamoDB: For user profiles and activity tracking, where flexible schemas matter.</li>
+                    <li>AWS Lambda: For event-driven processes like notifications and risk calculations.</li>
+                    <li>We deployed everything across multiple availability zones (AZs) for resilience. A hybrid app going down during a market shift? Not on our watch.</li>
+                  </ul>
 
-              <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 3: Making It Scale-Ready from Day One</h3>
-              
-              <p className="text-gray-700">
-                Auto-scaling was baked into the DNA from the start. The transaction engine needed low latency, so we designed both horizontal scaling (adding more instances) and vertical scaling (beefier instances when needed). Some key optimizations:
-              </p>
-              
-              <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
-                <li>Read replicas: As user queries grew, our database could spawn read-only clones when load spiked.</li>
-                <li>Connection pooling: Critical for managing database connections during traffic spikes.</li>
-                <li>Caching layer with Amazon ElastiCache: Frequently-accessed market data could skip the database entirely. The startups "Market Dashboard" was blisteringly fast as a result.</li>
-              </ul>
+                  <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Step 3: Making It Scale-Ready from Day One</h3>
+                  
+                  <p className="text-gray-700">
+                    Auto-scaling was baked into the DNA from the start. The transaction engine needed low latency, so we designed both horizontal scaling (adding more instances) and vertical scaling (beefier instances when needed). Some key optimizations:
+                  </p>
+                
+                  <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
+                    <li>Read replicas: As user queries grew, our database could spawn read-only clones when load spiked.</li>
+                    <li>Connection pooling: Critical for managing database connections during traffic spikes.</li>
+                    <li>Caching layer with Amazon ElastiCache: Frequently-accessed market data could skip the database entirely. The startups "Market Dashboard" was blisteringly fast as a result.</li>
+                  </ul>
 
-              <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">The Payoff</h3>
-              
-              <p className="text-gray-700">
-                Six months in, the platform is handling 50,000+ users and 250 million daily transactions. Latency is still sub-50ms, uptime is 99.99%, and—crucially—infrastructure costs grew linearly, not exponentially, as their user count tripled. Margins are comfortably sustainable even as they grow.
-              </p>
+                  <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">The Payoff</h3>
+                
+                  <p className="text-gray-700">
+                    Six months in, the platform is handling 50,000+ users and 250 million daily transactions. Latency is still sub-50ms, uptime is 99.99%, and—crucially—infrastructure costs grew linearly, not exponentially, as their user count tripled. Margins are comfortably sustainable even as they grow.
+                  </p>
 
-              <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Takeaway</h3>
-              
-              <p className="text-gray-700">
-                Building for hyper-growth taught us a few truths:
-              </p>
-              
-              <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
-                <li>Start with scale in mind (Microservices and serverless tech costs you unit growth headroom).</li>
-                <li>Invest in monitoring and operational tools early (CloudWatch + ELK Stack).</li>
-                <li>Set clear health thresholds (treating infrastructure as first-class code).</li>
-                <li>Document obsessively (The startup can now deploy architectural changes rapid-fire and keep the user experience fast and reliable as they scale).</li>
-              </ul>
+                  <h3 className="font-bold text-2xl mt-8 mb-4 text-gray-900">Takeaway</h3>
+                
+                  <p className="text-gray-700">
+                    Building for hyper-growth taught us a few truths:
+                  </p>
+                
+                  <ul className="list-disc pl-6 my-6 space-y-2 text-gray-700">
+                    <li>Start with scale in mind (Microservices and serverless tech costs you unit growth headroom).</li>
+                    <li>Invest in monitoring and operational tools early (CloudWatch + ELK Stack).</li>
+                    <li>Set clear health thresholds (treating infrastructure as first-class code).</li>
+                    <li>Document obsessively (The startup can now deploy architectural changes rapid-fire and keep the user experience fast and reliable as they scale).</li>
+                  </ul>
+                </>
+              )}
             </div>
           </div>
         </article>
