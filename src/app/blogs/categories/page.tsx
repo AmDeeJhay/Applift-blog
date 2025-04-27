@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Browse all blog categories from APPLIFT",
 }
 
-export default function CategoriesPage(): JSX.Element {
+export async function CategoriesPage(): Promise<JSX.Element> {
   const blogPosts = await FetchPosts() || []
   // Get all categories and count posts in each
   const categories = blogPosts.reduce<Record<string, number>>((acc, post) => {
