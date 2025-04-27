@@ -1,19 +1,24 @@
 "use server"
+// renamed this file to actions as it contains all api actions for the blog
 
 import axios from "axios";
 const API_URL = process.env.API_URL;
 
 export interface BlogPost {
-    id: string
-    title: string
-    author: string
-    date: string
-    image: string
-    excerpt: string
-    content?: string
-    featured?: boolean
-    category?: string
-  }
+ id: string;
+  title: string;
+  author_name: string;
+  content: string;
+  date?: string;
+  image?: string;
+  excerpt?: string;
+  featured?: boolean;
+  category?: string;
+  published?: boolean;
+  created_at?: string;
+  updated_at?: string;
+  comment_count?: number;
+}
   
 //   export const blogPosts: BlogPost[] = [
 //   {
@@ -114,13 +119,44 @@ export interface BlogPost {
 // Fetch blog post by ID using Axios
 export async function FetchPosts(): Promise<BlogPost[] | undefined> {
   try {
-    const response = await axios.get(`${API_URL}/posts/`);
+    const response = await axios.get(`${API_URL}/posts`);
     console.log("Fetched Blog Posts:", response.data);
-    // Log the fetched blog posts
-    const blogPosts: BlogPost[] = response.data; // Assuming the API returns an array of blog posts
-    return blogPosts; // Return the array of blog posts
+
+    // Convert id to string and ensure correct typing
+    const blogPosts: BlogPost[] = response.data.map((post: any) => ({
+      id: post.id.toString(),
+      title: post.title,
+      content: post.content,
+      published: post.published,
+      author_name: post.author_name,
+      created_at: post.created_at,
+      updated_at: post.updated_at,
+      comment_count: post.comment_count,
+    }));
+
+    return blogPosts; // Return properly typed array
   } catch (error) {
     console.error("Error fetching blog posts:", error);
     return undefined; // Return undefined if there's an error
+  }
+}
+
+
+export async function CreatePost(
+  post: BlogPost
+): Promise<BlogPost[] | undefined> {
+  try {
+    const response = await axios.post(`${API_URL}/posts/`, post, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }); // Include post data
+    console.log("Created Blog Post:", response.data);
+
+    // If the API returns the created post, you may not need an array here
+    return response.data;
+  } catch (error) {
+    console.error("Error creating blog post:", error);
+    return undefined;
   }
 }

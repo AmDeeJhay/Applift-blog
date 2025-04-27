@@ -2,24 +2,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react";
-import { blogPosts } from "@/lib/blog-data"; 
+ import { FetchPosts } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/comments/comments";
 
 interface BlogPost {
   id: string;
   title: string;
-  excerpt: string;
-  image: string;
-  category: string;
-  author: string;
-  date: string;
+  author_name: string;
+  content: string;
+  date?: string;
+  image?: string;
+  excerpt?: string;
+  featured?: boolean;
+  category?: string;
 }
+
+const blogPosts: BlogPost[] = await FetchPosts() || [];
 
 // Generate static paths
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   return blogPosts.map((post) => ({
-    id: post.id 
+    id: post.id.toString(), // Convert `id` to a string
   }));
 }
 
@@ -28,7 +32,7 @@ export async function generateMetadata({
   params,
 }: BlogPageParams) {
   const blogId = (await params).id;
-  const post = blogPosts.find((post) => post.id === blogId);
+  const post = blogPosts.find((post) => post.id === (blogId));
 
   if (!post) {
     return {
@@ -55,7 +59,7 @@ interface BlogPageParams {
 
 export default async function BlogPost({ params }: BlogPageParams) {
   const blogId = (await params).id 
-  const post = blogPosts.find((post) => post.id === blogId);
+  const post = blogPosts.find((post) => post.id === (blogId));
 
   if (!post) {
     notFound();
@@ -135,7 +139,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
                     <User size={20} />
                   </div>
                   <div>
-                    <p className="text-blue-600 font-medium">{post.author}</p>
+                    <p className="text-blue-600 font-medium">{post.author_name}</p>
                     <div className="flex items-center text-sm text-gray-500">
                       <Clock size={14} className="mr-1" />
                       <span>{post.date}</span>

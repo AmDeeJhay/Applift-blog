@@ -1,6 +1,6 @@
 "use client";
 
-import type { BlogPost } from "@/lib/blog-data";
+import type { BlogPost } from "@/lib/actions";
 import { BlogCard } from "./blog-card";
 import { JSX } from "react";
 import Image from "next/image";

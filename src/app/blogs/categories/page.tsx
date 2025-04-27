@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { blogPosts } from "@/lib/blog-data"
+// import { blogPosts } from "@/lib/actions";
 import type { Metadata } from "next"
 import { JSX } from "react"
+import { FetchPosts } from "@/lib/actions"
 
 export const metadata: Metadata = {
   title: "Blog Categories | APPLIFT",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function CategoriesPage(): JSX.Element {
+  const blogPosts = await FetchPosts() || []
   // Get all categories and count posts in each
   const categories = blogPosts.reduce<Record<string, number>>((acc, post) => {
     const category = post.category || "Uncategorized"
