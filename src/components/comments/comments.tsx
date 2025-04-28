@@ -2,7 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { MessageCircle, Send, Loader, UserCircle, Clock, ThumbsUp, Reply, RefreshCw } from "lucide-react";
-import { Comment, CommentReply, getCommentsByPostId, createComment, createCommentReply } from "@/lib/api-functions";
+
+interface CommentReply {
+  id: string;
+  author: string;
+  content: string;
+  createdAt: string;
+}
+
+interface Comment {
+  id: string;
+  author: string;
+  content: string;
+  createdAt: string;
+  replies: CommentReply[];
+}
 
 interface CommentSectionProps {
   postId: string;
@@ -22,7 +36,6 @@ export default function CommentSection({ postId }: CommentSectionProps) {
   useEffect(() => {
     fetchComments();
   }, [postId]);
-  
 
   // Simulated polling for new comments (in a real app, you might use WebSockets)
   useEffect(() => {
@@ -39,7 +52,6 @@ export default function CommentSection({ postId }: CommentSectionProps) {
         
         const newRandomComment = {
           id: `live-${Date.now()}`,
-          postId: postId,
           author: randomNames[Math.floor(Math.random() * randomNames.length)],
           content: randomContents[Math.floor(Math.random() * randomContents.length)],
           createdAt: new Date().toISOString(),
@@ -55,62 +67,58 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     }, 20000); // Check every 20 seconds
     
     return () => clearInterval(pollInterval);
-  }, [postId]);
+  }, []);
 
   const fetchComments = async () => {
     setLoading(true);
     try {
-      // Try to get comments from API
-      const apiComments = await getCommentsByPostId(postId);
-      if (apiComments && apiComments.length > 0) {
-        setComments(apiComments);
-      } else {
-        // Fallback to sample data if API returns empty or fails
-        // This is just for development/demo purposes
-        setTimeout(() => {
-          const sampleComments = [
-            {
-              id: "1",
-              postId: postId,
-              author: "Taylor Swift",
-              content: "This article really helped me understand the topic better. I appreciate how comprehensive it is!",
-              createdAt: "2025-04-24T15:32:00Z",
-              replies: [
-                {
-                  id: "1-1",
-                  author: "Morgan Lee",
-                  content: "I agree! The examples were particularly helpful.",
-                  createdAt: "2025-04-24T16:15:00Z"
-                }
-              ]
-            },
-            {
-              id: "2",
-              postId: postId,
-              author: "Jordan Peterson",
-              content: "I have a question about the framework you mentioned. Have you compared it with other similar approaches?",
-              createdAt: "2025-04-24T14:45:00Z",
-              replies: []
-            },
-            {
-              id: "3",
-              postId: postId,
-              author: "Alex Johnson",
-              content: "Looking forward to the follow-up piece you mentioned. When can we expect it?",
-              createdAt: "2025-04-24T12:30:00Z",
-              replies: [
-                {
-                  id: "3-1",
-                  author: "Admin",
-                  content: "We're working on it! Should be published next week.",
-                  createdAt: "2025-04-24T13:45:00Z"
-                }
-              ]
-            }
-          ];
-          setComments(sampleComments);
-        }, 800);
-      }
+      // Simulate API call with sample data
+      setTimeout(() => {
+        const sampleComments = [
+          {
+            id: "1",
+            author: "Taylor Swift",
+            content: "This article really helped me understand the topic better. I appreciate how comprehensive it is!",
+            createdAt: "2025-04-24T15:32:00Z",
+            replies: [
+              {
+                id: "1-1",
+                author: "Morgan Lee",
+                content: "I agree! The examples were particularly helpful.",
+                createdAt: "2025-04-24T16:15:00Z"
+              }
+            ]
+          },
+          {
+            id: "2",
+            author: "Jordan Peterson",
+            content: "I have a question about the framework you mentioned. Have you compared it with other similar approaches?",
+            createdAt: "2025-04-24T14:45:00Z",
+            replies: []
+          },
+          {
+            id: "3",
+            author: "Alex Johnson",
+            content: "Looking forward to the follow-up piece you mentioned. When can we expect it?",
+            createdAt: "2025-04-24T12:30:00Z",
+            replies: [
+              {
+                id: "3-1",
+                author: "Admin",
+                content: "We're working on it! Should be published next week.",
+                createdAt: "2025-04-24T13:45:00Z"
+              }
+            ]
+          }
+        ];
+        setComments(sampleComments);
+        setLoading(false);
+      }, 800);
+      
+      // In production:
+      // const response = await fetch(`/api/posts/${postId}/comments`);
+      // const data = await response.json();
+      // setComments(data);
     } catch (error) {
       console.error("Error fetching comments:", error);
     } finally {
@@ -125,39 +133,33 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     setIsSubmitting(true);
     
     try {
-      // Try to submit to API
-      const commentData = {
-        author: newComment.author,
-        content: newComment.content,
-        postId: postId
-      };
+      // Simulate API call
+      setTimeout(() => {
+        const newCommentObj = {
+          id: Date.now().toString(),
+          author: newComment.author,
+          content: newComment.content,
+          createdAt: new Date().toISOString(),
+          replies: []
+        };
+        
+        setComments([newCommentObj, ...comments]);
+        setNewComment({ author: "", content: "" });
+        setLastActivity("Your comment was posted successfully!");
+        setTimeout(() => setLastActivity(null), 5000);
+        setIsSubmitting(false);
+      }, 600);
       
-      const newCommentObj = await createComment(commentData);
-      
-      // If API call was successful, add the new comment to the state
-      setComments([newCommentObj, ...comments]);
-      setNewComment({ author: "", content: "" });
-      setLastActivity("Your comment was posted successfully!");
-      setTimeout(() => setLastActivity(null), 5000);
+      // In production:
+      // const response = await fetch(`/api/posts/${postId}/comments`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(newComment)
+      // });
+      // const data = await response.json();
+      // setComments([data, ...comments]);
     } catch (error) {
       console.error("Error adding comment:", error);
-      
-      // Fallback for demo/development - simulate successful submission
-      const newCommentObj = {
-        id: Date.now().toString(),
-        postId: postId,
-        author: newComment.author,
-        content: newComment.content,
-        createdAt: new Date().toISOString(),
-        replies: []
-      };
-      
-      setComments([newCommentObj, ...comments]);
-      setNewComment({ author: "", content: "" });
-      setLastActivity("Your comment was posted successfully!");
-      setTimeout(() => setLastActivity(null), 5000);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -165,34 +167,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     if (!newReply.author.trim() || !newReply.content.trim()) return;
     
     try {
-      // Try to submit reply to API
-      const replyData = {
-        author: newReply.author,
-        content: newReply.content
-      };
-      
-      const newReplyObj = await createCommentReply(commentId, replyData);
-      
-      // Update state with new reply
-      setComments(prevComments => 
-        prevComments.map(comment => 
-          comment.id === commentId
-            ? { 
-                ...comment, 
-                replies: [...(comment.replies || []), newReplyObj] 
-              }
-            : comment
-        )
-      );
-      
-      setNewReply({ author: "", content: "" });
-      setReplyingTo(null);
-      setLastActivity("Your reply was posted successfully!");
-      setTimeout(() => setLastActivity(null), 5000);
-    } catch (error) {
-      console.error("Error adding reply:", error);
-      
-      // Fallback for demo/development
+      // Simulate API call
       const replyObj = {
         id: `reply-${Date.now()}`,
         author: newReply.author,
@@ -203,10 +178,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       setComments(prevComments => 
         prevComments.map(comment => 
           comment.id === commentId
-            ? { 
-                ...comment, 
-                replies: [...(comment.replies || []), replyObj] 
-              }
+            ? { ...comment, replies: [...comment.replies, replyObj] }
             : comment
         )
       );
@@ -215,6 +187,15 @@ export default function CommentSection({ postId }: CommentSectionProps) {
       setReplyingTo(null);
       setLastActivity("Your reply was posted successfully!");
       setTimeout(() => setLastActivity(null), 5000);
+      
+      // In production:
+      // await fetch(`/api/posts/${postId}/comments/${commentId}/replies`, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(newReply)
+      // });
+    } catch (error) {
+      console.error("Error adding reply:", error);
     }
   };
 
@@ -375,7 +356,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                       </button>
                     </div>
                     
-                    {comment.replies && comment.replies.length > 0 && (
+                    {comment.replies.length > 0 && (
                       <span className="text-xs text-blue-600">
                         {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}
                       </span>
@@ -384,7 +365,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                 </div>
                 
                 {/* Show replies if comment is selected */}
-                {selectedComment === comment.id && comment.replies && comment.replies.length > 0 && (
+                {selectedComment === comment.id && comment.replies.length > 0 && (
                   <div className="pl-6 mt-2 space-y-2">
                     {comment.replies.map((reply) => (
                       <div key={reply.id} className="bg-gray-50 p-3 rounded-lg border border-gray-200">

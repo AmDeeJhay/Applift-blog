@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { blogPosts, type BlogPost } from "@/lib/blog-data"
+import { blogPosts, type BlogPost } from "@/lib/actions";
 import type { Metadata } from "next"
 import { JSX } from "react"
 
@@ -88,4 +88,3 @@ export default function ArchivePage(): JSX.Element {
     </main>
   )
 }
-
