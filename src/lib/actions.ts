@@ -117,7 +117,7 @@ export interface BlogPost {
 // ]
 
 // Fetch blog post by ID using Axios
-export async function FetchPosts(): Promise<BlogPost[] | undefined> {
+export async function FetchPosts(): Promise<BlogPost[]> {
   try {
     const response = await axios.get(`${API_URL}/posts`);
     console.log("Fetched Blog Posts:", response.data);

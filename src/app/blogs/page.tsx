@@ -9,7 +9,7 @@ import { Footer } from "@/components/layout/footer"
 
 export default function BlogsPage() {
   // Get featured post
-  const featuredPost = blogPosts.find((post) => post.featured)
+  const featuredPost = blogPosts.filter((post) => post.featured)
 
   // Get recent posts (excluding featured)
   const recentPosts = blogPosts

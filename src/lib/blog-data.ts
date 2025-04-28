@@ -27,10 +27,10 @@ export interface Comment {
 export const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "Scaling Cloud Infrastructure for Fintech Startups",
-    author: "Jane Smith",
+    title: "Scaling Cloud Infrastructure for Fintech <br /> Startups",
+    author: "Fortune Ishaku",
     date: "April 15, 2025",
-    image: "/assets/images/blog-1.jpg",
+    image: "/assets/images/featured-img.png",
     excerpt: "How we helped a fintech startup scale their cloud infrastructure to handle millions of transactions while maintaining security and compliance.",
     category: "Cloud Engineering",
     featured: true
@@ -40,7 +40,7 @@ export const blogPosts: BlogPost[] = [
     title: "AI-Powered Data Analytics for E-commerce",
     author: "John Doe",
     date: "April 10, 2025",
-    image: "/assets/images/blog-2.jpg",
+    image: "/assets/images/sideA.png",
     excerpt: "Implementing machine learning algorithms to optimize inventory management and improve customer experience.",
     category: "AI & Machine Learning"
   },
@@ -49,7 +49,7 @@ export const blogPosts: BlogPost[] = [
     title: "Building Resilient Microservices Architecture",
     author: "Sarah Johnson",
     date: "April 5, 2025",
-    image: "/assets/images/blog-3.jpg",
+    image: "/assets/images/sideA.png",
     excerpt: "Best practices for designing and implementing microservices that can withstand failures and scale efficiently.",
     category: "Architecture"
   },
@@ -58,7 +58,7 @@ export const blogPosts: BlogPost[] = [
     title: "DevOps Transformation for Legacy Systems",
     author: "Mike Chen",
     date: "March 28, 2025",
-    image: "/assets/images/blog-4.jpg",
+    image: "/assets/images/sideA.png",
     excerpt: "How we helped a traditional enterprise modernize their development pipeline and adopt DevOps practices.",
     category: "DevOps"
   },
@@ -67,7 +67,7 @@ export const blogPosts: BlogPost[] = [
     title: "Securing API Gateways in Multi-cloud Environments",
     author: "Alex Kumar",
     date: "March 20, 2025",
-    image: "/assets/images/blog-5.jpg",
+    image: "/assets/images/sideA.png",
     excerpt: "Strategies for implementing robust security controls for API gateways across different cloud providers.",
     category: "Security"
   }
