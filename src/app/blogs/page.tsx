@@ -9,7 +9,7 @@ import { Footer } from "@/components/layout/footer"
 
 export default function BlogsPage() {
   // Get featured post
-  const featuredPost = blogPosts.filter((post) => post.featured)
+  const featuredPost = blogPosts.filter((post) => post.featured);
 
   // Get recent posts (excluding featured)
   const recentPosts = blogPosts
@@ -55,7 +55,7 @@ export default function BlogsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Featured Blog Post */}
             <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
-              {featuredPost && <FeaturedPost post={featuredPost} />}
+              {featuredPost.length > 0 && <FeaturedPost post={featuredPost[0]} />}
             </div>
 
             {/* Recent Posts List */}
@@ -103,7 +103,7 @@ export default function BlogsPage() {
               All categories
             </Link>
           </div>
-          <ReadMoreSection posts={readMorePosts} />
+          <ReadMoreSection postId="someUniqueId" post={readMorePosts} />
         </section>
       </div>
 

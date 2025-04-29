@@ -1,4 +1,4 @@
-"use server"
+// "use server"
 // renamed this file to actions as it contains all api actions for the blog
 
 import axios from "axios";
@@ -19,7 +19,8 @@ export interface BlogPost {
   updated_at?: string;
   comment_count?: number;
 }
-  
+
+
 //   export const blogPosts: BlogPost[] = [
 //   {
 //     id: "scalable-cloud-platform",
@@ -117,7 +118,7 @@ export interface BlogPost {
 // ]
 
 // Fetch blog post by ID using Axios
-export async function FetchPosts(): Promise<BlogPost[]> {
+export async function FetchPosts(): Promise<BlogPost[] | undefined> {
   try {
     const response = await axios.get(`${API_URL}/posts`);
     console.log("Fetched Blog Posts:", response.data);
