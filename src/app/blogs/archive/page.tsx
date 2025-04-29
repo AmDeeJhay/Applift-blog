@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { blogPosts, type BlogPost } from "@/lib/actions";
+import type { BlogPost } from "@/lib/actions";
 import type { Metadata } from "next"
 import { JSX } from "react"
 
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
 
 export default function ArchivePage(): JSX.Element {
   // Group posts by month and year
-  const postsByDate = blogPosts.reduce<Record<string, BlogPost[]>>((acc, post) => {
-    const date = new Date(post.date)
+  const blogPosts: BlogPost[] = []; // Replace with actual data fetching logic
+  const postsByDate = blogPosts.reduce<Record<string, BlogPost[]>>((acc: Record<string, BlogPost[]>, post: BlogPost) => {
+    const date = new Date(post.date ?? "")
     const monthYear = `${date.toLocaleString("default", { month: "long" })} ${date.getFullYear()}`
 
     if (!acc[monthYear]) {
