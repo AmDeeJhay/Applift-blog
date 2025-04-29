@@ -9,7 +9,7 @@ import Link from "next/link"
    description: "Browse all blog categories from APPLIFT",
  }
  
- export async function CategoriesPage(): Promise<JSX.Element> {
+ export default async function CategoriesPage(): Promise<JSX.Element> {
    const blogPosts = await FetchPosts() || []
    // Get all categories and count posts in each
    // Get all categories and count posts

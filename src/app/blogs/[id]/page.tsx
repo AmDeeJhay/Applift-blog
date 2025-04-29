@@ -248,7 +248,7 @@ export default async function BlogPost({ params }: BlogPageParams) {
                   <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md h-full flex flex-col">
                     <div className="relative aspect-video w-full overflow-hidden">
                       <Image
-                        src={relatedPost.image || "/placeholder.svg"}
+                        src={relatedPost.image || "/assets/images/sideA.png"}
                         alt={relatedPost.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

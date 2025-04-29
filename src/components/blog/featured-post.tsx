@@ -33,9 +33,9 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
           <div className="h-11 ml-8 bg-[#CCFF6F] p-14 rounded-b-lg  rounded-tr-lg  w-full absolute bottom-0 z-0" />
 
           {/* Black Title Card */}
-          <div className="relative z-10 bg-[#202020] h-30 rounded-lg p-4 -mr-2 -mb-2">
-            <h2 className="text-white text-xl font-sm leading-snug mb-2">
-              <span dangerouslySetInnerHTML={{ __html: post.title }} />
+          <div className="relative z-10 bg-[#202020] rounded-lg p-4 -mr-2 -mb-2">
+            <h2 className="text-white text-2xl font-sm leading-snug mb-2">
+              {post.title}
             </h2>
             <div className="flex items-center text-sm text-[#CCFF6F] space-x-4">
               <span>{post.author}</span>
