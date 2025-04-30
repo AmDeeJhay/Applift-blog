@@ -41,11 +41,14 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3].map((index) => (
+        {[1, 2, 3, 4, 5].map((index) => (
           <div key={index} className="border border-gray-300 rounded-lg p-3 animate-pulse">
             <div className="bg-gray-200 h-[200px] w-full rounded-md mb-3"></div>
             <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
             <div className="bg-gray-200 h-4 w-1/2 rounded"></div>
+            <div className="bg-gray-200 h-[200px] w-full rounded-md mb-3"></div>
+            <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
+          
           </div>
         ))}
       </div>
@@ -64,7 +67,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.slice(0, 6).map((post, index) => {
+      {posts.slice(1, 5).map((post, index) => {
         let variant: "standard" | "landscape" = "standard";
         let colSpan = "";
 
