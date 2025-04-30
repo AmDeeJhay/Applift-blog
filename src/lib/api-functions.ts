@@ -33,10 +33,10 @@ export interface CommentReply {
 // === POSTS ===
 
 // GET /posts/ - Read all posts
-export async function getAllPosts() {
+export async function getAllPosts(): Promise<BlogPost[]> {
   try {
+    console.log("Fetching posts from:", `${API_URL}/posts`); // Debugging log
     const response = await axios.get(`${API_URL}/posts`);
-    console.log("Fetched all posts:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching posts:", error);

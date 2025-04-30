@@ -81,8 +81,10 @@ export function getRelatedPosts(category: string, excludeId: string): BlogPost[]
 }
 
 export function getFeaturedPosts(): BlogPost[] {
-  return blogPosts.filter(post => post.featured);
+  return blogPosts.filter(post => post.featured)
+  .slice(0, 3);
 }
+
 
 // === POSTS ===
 

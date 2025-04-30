@@ -55,7 +55,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
   // Error state
   if (error) {
     return <div className="text-red-500 p-4 text-center">{error}</div>;
-  }
+  } 
 
   // No posts state
   if (posts.length === 0) {
@@ -64,7 +64,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.slice(0, 3).map((post, index) => {
+      {posts.slice(0, 6).map((post, index) => {
         let variant: "standard" | "landscape" = "standard";
         let colSpan = "";
 

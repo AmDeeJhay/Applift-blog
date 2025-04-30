@@ -23,12 +23,12 @@ export default function ReadMoreSection({ postId, category, }: ReadMoreSectionPr
         if (category) {
           // Fetch from API if we have category
           const relatedPosts = await getRelatedPosts(category, postId);
-          setPosts(relatedPosts.slice(0, 3)); // Limit to 3 posts
+          setPosts(relatedPosts.slice(0, 6)); // Limit to 3 posts
         } else {
           // Fallback to local data in blog-data.ts
           const filteredPosts = blogPosts
             .filter((post: BlogPost) => post.id !== postId)
-            .slice(0, 3);
+            .slice(0, 6);
           setPosts(filteredPosts);
         }
       } catch (error) {
@@ -36,7 +36,7 @@ export default function ReadMoreSection({ postId, category, }: ReadMoreSectionPr
         // Fallback to local data
         const filteredPosts = blogPosts
           .filter((post: BlogPost) => post.id !== postId)
-          .slice(0, 3);
+          .slice(0, 6);
         setPosts(filteredPosts);
       } finally {
         setLoading(false);

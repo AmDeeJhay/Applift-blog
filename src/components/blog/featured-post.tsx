@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import type { BlogPost } from "@/lib/blog-data";
+import { BlogPost } from "@/lib/blog-data";
 import { JSX } from "react";
 
 interface FeaturedPostProps {
@@ -35,7 +37,7 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
           {/* Black Title Card */}
           <div className="relative z-10 bg-[#202020] rounded-lg p-4 -mr-2 -mb-2">
             <h2 className="text-white text-2xl font-sm leading-snug mb-2">
-              {post.title}
+              <span dangerouslySetInnerHTML={{ __html: post.title }} />
             </h2>
             <div className="flex items-center text-sm text-[#CCFF6F] space-x-4">
               <span>{post.author}</span>

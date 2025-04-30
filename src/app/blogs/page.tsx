@@ -15,7 +15,7 @@ export default function BlogsPage() {
   const recentPosts = blogPosts
     .filter((post) => !post.featured)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 5)
+    .slice(0, 3)
 
   // Get remaining posts for "Read More" section
   const readMorePosts = blogPosts.filter((post) => !post.featured && !recentPosts.includes(post)).slice(0, 6)
