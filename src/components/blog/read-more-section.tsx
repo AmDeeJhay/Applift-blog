@@ -19,6 +19,7 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
       setLoading(true);
       try {
         let relatedPosts: BlogPost[] = [];
+        const allPosts = await getAllPosts();
 
         if (category) {
           // Fetch related posts by category
@@ -29,7 +30,8 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
         }
 
         // Exclude the current post and limit to 6 posts
-        const filteredPosts = relatedPosts
+        // const filteredPosts = relatedPosts allPosts
+        const filteredPosts = allPosts
           .filter((post: BlogPost) => post.id !== postId)
           .slice(0, 6);
 
