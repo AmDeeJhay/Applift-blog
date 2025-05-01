@@ -46,8 +46,6 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
             <div className="bg-gray-200 h-[200px] w-full rounded-md mb-3"></div>
             <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
             <div className="bg-gray-200 h-4 w-1/2 rounded"></div>
-            <div className="bg-gray-200 h-[200px] w-full rounded-md mb-3"></div>
-            <div className="bg-gray-200 h-6 w-3/4 rounded mb-2"></div>
           
           </div>
         ))}
@@ -67,7 +65,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.slice(1, 5).map((post, index) => {
+      {posts.slice(0, 5).map((post, index) => {
         let variant: "standard" | "landscape" = "standard";
         let colSpan = "";
 
@@ -118,7 +116,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
       })}
 
       {/* Extra Two Posts Below the Landscape Post */}
-      {posts.slice(1, 5).map((post) => (
+      {posts.slice(1, 3).map((post) => (
         <div 
           key={`extra-${post.id}`} 
           className="border border-gray-300 rounded-lg p-3 px-4"

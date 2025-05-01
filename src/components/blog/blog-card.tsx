@@ -193,7 +193,7 @@ export function BlogCard({
   // Default compact variant
   return (
     <Link href={`/blogs/${postId}`} className="flex gap-4 group"> 
-      <div className="relative w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
+      <div className="relative w-28 h-24 flex-shrink-0 overflow-hidden rounded-md">
         {/* Shadow effect underneath image */}
         <div className="absolute w-24 h-24 bg-gray-900 rounded-md bottom-0 translate-y-1 opacity-30"></div>
         <div className="relative w-24 h-24 overflow-hidden rounded-md">

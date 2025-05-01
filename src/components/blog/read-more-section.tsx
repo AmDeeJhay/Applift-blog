@@ -3,47 +3,46 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost, getRelatedPosts } from "@/lib/api-functions";
-import { blogPosts } from "@/lib/blog-data";
+import { BlogPost, getAllPosts, getRelatedPosts } from "@/lib/api-functions";
 
 interface ReadMoreSectionProps {
   postId: string;
   category?: string;
-  post: BlogPost[];
 }
 
-export default function ReadMoreSection({ postId, category, }: ReadMoreSectionProps) {
+export default function ReadMoreSection({ postId, category }: ReadMoreSectionProps) {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchRelatedPosts() {
+    async function fetchPosts() {
       setLoading(true);
       try {
+        let relatedPosts: BlogPost[] = [];
+
         if (category) {
-          // Fetch from API if we have category
-          const relatedPosts = await getRelatedPosts(category, postId);
-          setPosts(relatedPosts.slice(0, 6)); // Limit to 3 posts
+          // Fetch related posts by category
+          relatedPosts = await getRelatedPosts(category, postId);
         } else {
-          // Fallback to local data in blog-data.ts
-          const filteredPosts = blogPosts
-            .filter((post: BlogPost) => post.id !== postId)
-            .slice(0, 6);
-          setPosts(filteredPosts);
+          // Fetch all posts if no category is provided
+          relatedPosts = await getAllPosts();
         }
-      } catch (error) {
-        console.error("Error fetching related posts:", error);
-        // Fallback to local data
-        const filteredPosts = blogPosts
+
+        // Exclude the current post and limit to 6 posts
+        const filteredPosts = relatedPosts
           .filter((post: BlogPost) => post.id !== postId)
           .slice(0, 6);
+
         setPosts(filteredPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setPosts([]); // Set to an empty array if the API call fails
       } finally {
         setLoading(false);
       }
     }
 
-    fetchRelatedPosts();
+    fetchPosts();
   }, [postId, category]);
 
   if (loading) {
@@ -51,8 +50,8 @@ export default function ReadMoreSection({ postId, category, }: ReadMoreSectionPr
       <div className="mt-16">
         <h3 className="text-xl font-bold mb-6 text-gray-900">You might also like</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-gray-100 rounded-xl h-64 animate-pulse"></div>
+          {[1, 2, 3].map((index) => (
+            <div key={index} className="bg-gray-100 rounded-xl h-64 animate-pulse"></div>
           ))}
         </div>
       </div>
@@ -65,6 +64,7 @@ export default function ReadMoreSection({ postId, category, }: ReadMoreSectionPr
 
   return (
     <div className="mt-16">
+      <h3 className="text-xl font-bold mb-6 text-gray-900">You might also like</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {posts.map((post: BlogPost) => (
           <Link key={post.id} href={`/blogs/${post.id}`} className="group">
