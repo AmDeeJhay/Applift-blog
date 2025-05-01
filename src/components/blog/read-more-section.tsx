@@ -50,7 +50,6 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
   if (loading) {
     return (
       <div className="mt-16">
-        <h3 className="text-xl font-bold mb-6 text-gray-900">You might also like</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[1, 2, 3].map((index) => (
             <div key={index} className="bg-gray-100 rounded-xl h-64 animate-pulse"></div>
