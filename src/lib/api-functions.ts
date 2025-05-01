@@ -1,11 +1,11 @@
-// lib/api-functions.ts
+"use server";
 import axios from "axios";
 const API_URL = process.env.API_URL 
 
 export interface BlogPost {
   id: string
   title: string
-  author: string
+  author_name: string
   date: string
   image: string
   excerpt: string
@@ -35,8 +35,10 @@ export interface CommentReply {
 // GET /posts/ - Read all posts
 export async function getAllPosts(): Promise<BlogPost[]> {
   try {
+    console.log("API URL:", API_URL); // Debugging log
     console.log("Fetching posts from:", `${API_URL}/posts`); // Debugging log
     const response = await axios.get(`${API_URL}/posts`);
+    console.log("Fetched posts:", response.data); // Debugging log
     return response.data;
   } catch (error) {
     console.error("Error fetching posts:", error);

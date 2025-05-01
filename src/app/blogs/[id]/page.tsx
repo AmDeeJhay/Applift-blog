@@ -1,55 +1,44 @@
-/* eslint-disable react/no-unescaped-entities */
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react";
-import { FetchPosts } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/comments/comments";
+import { useBlogContext } from "src/app/context/blogsContext";
+import type { BlogPost } from "@/lib/actions"; // Import BlogPost type
 
-interface BlogPost {
-  id: string;
-  title: string;
-  author_name: string;
-  content: string;
-  date?: string;
-  image?: string;
-  excerpt?: string;
-  featured?: boolean;
-  category?: string;
-}
 
-const blogPosts: BlogPost[] = await FetchPosts() || [];
 
 // Generate static paths
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  return blogPosts.map((post) => ({
-    id: post.id.toString(), // Convert `id` to a string
-  }));
-}
+// export async function generateStaticParams(): Promise<{ id: string }[]> {
+//   return blogPosts.map((post) => ({
+//     id: post.id.toString(), // Convert `id` to a string
+//   }));
+// }
 
 // Metadata generation
-export async function generateMetadata({
-  params,
-}: BlogPageParams) {
-  const blogId = (await params).id;
-  const post = blogPosts.find((post) => post.id === (blogId));
+// export async function generateMetadata({
+//   params,
+// }: BlogPageParams) {
+//   const blogId = (await params).id;
+//   const post = blogPosts.find((post) => post.id === (blogId));
 
-  if (!post) {
-    return {
-      title: "Blog Post Not Found"
-    };
-  }
+//   if (!post) {
+//     return {
+//       title: "Blog Post Not Found"
+//     };
+//   }
 
-  return {
-    title: `${post.title} | APPLIFT Blog`,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: [post.image],
-    },
-  };
-}
+//   return {
+//     title: `${post.title} | APPLIFT Blog`,
+//     description: post.excerpt,
+//     openGraph: {
+//       title: post.title,
+//       description: post.excerpt,
+//       images: [post.image],
+//     },
+//   };
+// }
 
 interface BlogPageParams {
   params: Promise<{
@@ -58,6 +47,8 @@ interface BlogPageParams {
 }
 
 export default async function BlogPost({ params }: BlogPageParams) {
+  const blogPosts = useBlogContext()?.blogPosts || [];
+
   const blogId = (await params).id 
   const post = blogPosts.find((post) => post.id === (blogId));
 
@@ -65,9 +56,11 @@ export default async function BlogPost({ params }: BlogPageParams) {
     notFound();
   }
 
-  const relatedPosts = blogPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
-    .slice(0, 3);
+ 
+
+  const relatedPosts: BlogPost[] = blogPosts
+    .filter((p: BlogPost) => p.id !== post.id && p.category === post.category)
+    .slice(0, 3) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">

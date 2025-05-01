@@ -1,20 +1,25 @@
+"use client"
 import Link from "next/link"
 // import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BlogList } from "@/components/blog/blog-list"
 import { FeaturedPost } from "@/components/blog/featured-post"
 import { RecentPosts } from "@/components/blog/recent-post"
 import  ReadMoreSection from "@/components/blog/read-more-section"
-import { blogPosts } from "@/lib/blog-data"
 import { Footer } from "@/components/layout/footer"
+import { useBlogContext } from "../context/blogsContext"
 
 export default function BlogsPage() {
+const blogContextData = useBlogContext(); // Get blog context
+// const loading = blogContextData?.loading || false; // Safely access loading or use false
+  const blogPosts = blogContextData?.blogPosts || []; // Safely access blogPosts or use an empty array
+  
   // Get featured post
   const featuredPost = blogPosts.filter((post) => post.featured);
 
   // Get recent posts (excluding featured)
   const recentPosts = blogPosts
     .filter((post) => !post.featured)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
     .slice(0, 3)
 
   // Get remaining posts for "Read More" section
@@ -55,7 +60,7 @@ export default function BlogsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Featured Blog Post */}
             <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
-              {featuredPost.length > 0 && <FeaturedPost post={featuredPost[0]} />}
+              {featuredPost.length > 0 && <FeaturedPost post={{ ...featuredPost[0], date: featuredPost[0].date || "", image: featuredPost[0].image || "" }} />}
             </div>
 
             {/* Recent Posts List */}
