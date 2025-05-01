@@ -103,7 +103,7 @@ export default function BlogsPage() {
               All categories
             </Link>
           </div>
-          <ReadMoreSection postId="someUniqueId" post={readMorePosts} />
+          <ReadMoreSection postId="someUniqueId" />
         </section>
       </div>
 

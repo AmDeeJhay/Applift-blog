@@ -142,7 +142,7 @@ export function BlogCard({
           <div className="mt-auto text-sm">
             <span className="text-gray-500">{postAuthor}</span>
             <span className="text-gray-500 ml-2">{postDate}</span>
-          </div>
+          </div> 
         </div>
       </div>
     );
