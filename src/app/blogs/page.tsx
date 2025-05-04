@@ -1,40 +1,18 @@
 "use client"
-
 import Link from "next/link"
 // import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BlogList } from "@/components/blog/blog-list"
 import { FeaturedPost } from "@/components/blog/featured-post"
 import { RecentPosts } from "@/components/blog/recent-post"
 import  ReadMoreSection from "@/components/blog/read-more-section"
-import { Footer } from "@/components/layout/footer";
+import { Footer } from "@/components/layout/footer"
+import { useBlogContext } from "../context/blogsContext"
 
-
-
-interface BlogPost {
-  id: string;
-  title: string;
-  author_name: string;
-  content: string;
-  date?: string;
-  image?: string;
-  excerpt?: string;
-  featured?: boolean;
-  category?: string;
-  published?: boolean;
-  created_at?: string;
-  updated_at?: string;
-  comment_count?: number;
-}
-
-interface BlogsPageProps {
-  blogPosts: BlogPost[];
-}
-
-export default function BlogsPage({ blogPosts }: BlogsPageProps) {
-  // const blogPosts: BlogPost[] = (await FetchPosts() || []).map((post) => ({
-  //   ...post,
-  //   published: post.published !== undefined ? post.published : false, // Ensure 'published' is always a boolean
-  // }));
+export default function BlogsPage() {
+const blogContextData = useBlogContext(); // Get blog context
+// const loading = blogContextData?.loading || false; // Safely access loading or use false
+  const blogPosts = blogContextData?.blogPosts || []; // Safely access blogPosts or use an empty array
+  
   // Get featured post
   const featuredPost = blogPosts?.find((post) => post.featured);
   // const featuredPost = blogPosts.filter((post) => post.featured);
@@ -43,12 +21,9 @@ export default function BlogsPage({ blogPosts }: BlogsPageProps) {
  
 
   const recentPosts = blogPosts
-  ?.filter((post: BlogPost) => !post.featured)
-  .sort(
-    (a: BlogPost, b: BlogPost) =>
-      new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
-  )
-  .slice(0, 3);
+    .filter((post) => !post.featured)
+    .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+    .slice(0, 3)
 
   // Get remaining posts for "Read More" section
   const readMorePosts = blogPosts
@@ -99,7 +74,7 @@ export default function BlogsPage({ blogPosts }: BlogsPageProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Featured Blog Post */}
             <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
-              {featuredPost.length > 0 && <FeaturedPost post={featuredPost[0]} />}
+              {featuredPost.length > 0 && <FeaturedPost post={{ ...featuredPost[0], date: featuredPost[0].date || "", image: featuredPost[0].image || "" }} />}
             </div>
 
             {/* Recent Posts List */}

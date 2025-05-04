@@ -13,8 +13,8 @@ interface BlogCardProps {
   postId?: string; // Optional postId prop for fetching posts
   id?: string;
   title?: string;
-  author?: string;
-  date?: string;
+  author_name?: string;
+  date: string |"";
   image?: string;
   excerpt?: string;
   featured?: boolean;
@@ -25,7 +25,7 @@ export function BlogCard({
   post,
   id,
   title,
-  author,
+  author_name,
   date,
   image,
   excerpt,
@@ -35,7 +35,7 @@ export function BlogCard({
   // If a post object is provided, use its properties
   const postId = post?.id || id || "";
   const postTitle = post?.title || title || "";
-  const postAuthor = post?.author || author || "";
+  const postAuthor = post?.author_name || author_name || "";
   const postDate = post?.date || date || "";
   const postImage = post?.image || image || "/placeholder.svg";
   const postExcerpt = post?.excerpt || excerpt || "";

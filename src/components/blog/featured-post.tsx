@@ -40,7 +40,7 @@ export function FeaturedPost({ post }: FeaturedPostProps): JSX.Element {
               <span dangerouslySetInnerHTML={{ __html: post.title }} />
             </h2>
             <div className="flex items-center text-sm text-[#CCFF6F] space-x-4">
-              <span>{post.author}</span>
+              <span>{post.author_name}</span>
               <span>{post.date}</span>
             </div>
           </div>
