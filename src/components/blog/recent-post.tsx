@@ -3,6 +3,8 @@ import { BlogCard } from "./blog-card";
 import { JSX } from "react";
 import Image from "next/image";
 import { getAllPosts } from "@/lib/api-functions"; // Import the API function
+import { useEffect, useState } from "react";
+
 
 interface RecentPostsProps {
   initialPosts?: BlogPost[]; // Optional initial posts from props
@@ -21,10 +23,15 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
         try {
           setLoading(true);
           const postsData = await getAllPosts();
-          setPosts(postsData);
+          setPosts(Array.isArray(postsData)? postsData.map((post) => ({
+            ...post,
+            author_name: post.author || "Unknown Author", // Provide a default value if necessary
+            content: post.content || "", // Ensure content is never undefined
+          })) : []);
         } catch (err) {
           console.error("Error fetching posts:", err);
           setError("Failed to load posts. Please try again later.");
+          
         } finally {
           setLoading(false);
         }
@@ -100,7 +107,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
                   {/* Author and Date */}
                   <div className="text-sm text-gray-500">
-                    <span>{post.author}</span>
+                    <span>{post.author_name}</span>
                     <span className="ml-2">{post.date}</span>
                   </div>
                 </div>
@@ -141,7 +148,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
               {/* Author and Date */}
               <div className="text-sm text-gray-500">
-                <span>{post.author}</span>
+                <span>{post.author_name}</span>
                 <span className="ml-2">{post.date}</span>
               </div>
             </div>

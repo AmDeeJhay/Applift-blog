@@ -2,6 +2,7 @@
 // renamed this file to actions as it contains all api actions for the blog
 
 import axios from "axios";
+
 const API_URL = process.env.API_URL;
 
 export interface BlogPost {
@@ -141,6 +142,13 @@ export async function FetchPosts(): Promise<BlogPost[] | undefined> {
   }
 }
 
+export async function getBlogPosts() {
+  const posts = await FetchPosts();
+  return (posts || []).map((post) => ({
+    ...post,
+    published: post.published !== undefined ? post.published : false,
+  }));
+}
 
 export async function CreatePost(
   post: BlogPost

@@ -1,11 +1,10 @@
 "use client";
 
 import type { BlogPost } from "@/lib/actions";
-import { BlogCard } from "./blog-card";
-import { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost, getAllPosts, getRelatedPosts } from "@/lib/api-functions";
+import { getAllPosts, getRelatedPosts } from "@/lib/api-functions";
+import { useEffect, useState } from "react";
 
 interface ReadMoreSectionProps {
   postId: string;
@@ -28,14 +27,22 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
           relatedPosts = await getRelatedPosts(category, postId);
         } else {
           // Fetch all posts if no category is provided
-          relatedPosts = await getAllPosts();
+          relatedPosts = (await getAllPosts()).map((post) => ({
+            ...post,
+            author_name: post.author || "Unknown Author", // Provide a default value if necessary
+            content: post.content || "", // Ensure content is never undefined
+          }));
         }
 
         // Exclude the current post and limit to 6 posts
         // const filteredPosts = relatedPosts allPosts
         const filteredPosts = allPosts
           .filter((post: BlogPost) => post.id !== postId)
-          .slice(0, 6);
+          .slice(0, 6)
+          .map((post) => ({
+            ...post,
+            author_name: post.author || "Unknown Author", // Ensure author_name is present
+          }));
 
         setPosts(filteredPosts);
       } catch (error) {

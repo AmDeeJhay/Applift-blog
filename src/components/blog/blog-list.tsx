@@ -7,6 +7,10 @@ interface BlogListProps {
 }
 
 export function BlogList({ posts }: BlogListProps): JSX.Element {
+  if (!posts || posts.length === 0) {
+    return <div>No posts available.</div>;
+  }
+  
   return (
     <div className="space-y-6">
       {posts.map((post) => (
