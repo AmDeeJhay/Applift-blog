@@ -1,4 +1,4 @@
-// "use server"
+"use server"
 // renamed this file to actions as it contains all api actions for the blog
 
 import axios from "axios";
@@ -19,8 +19,7 @@ export interface BlogPost {
   updated_at?: string;
   comment_count?: number;
 }
-
-
+  
 //   export const blogPosts: BlogPost[] = [
 //   {
 //     id: "scalable-cloud-platform",

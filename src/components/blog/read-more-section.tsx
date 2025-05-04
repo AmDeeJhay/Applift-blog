@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import type { BlogPost } from "@/lib/actions";
+import { BlogCard } from "./blog-card";
+import { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BlogPost, getAllPosts, getRelatedPosts } from "@/lib/api-functions";

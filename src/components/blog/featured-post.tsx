@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost } from "@/lib/blog-data";
+import type { BlogPost } from "@/lib/actions";
 import { JSX } from "react";
 
 interface FeaturedPostProps {

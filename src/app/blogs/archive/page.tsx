@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import type { BlogPost } from "@/lib/actions";
+import { blogPosts, type BlogPost } from "@/lib/actions";
 import type { Metadata } from "next"
 import { JSX } from "react"
 

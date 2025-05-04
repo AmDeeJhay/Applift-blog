@@ -1,7 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import type { BlogPost } from "@/lib/blog-data";
+import type { BlogPost } from "@/lib/actions";
 import { BlogCard } from "./blog-card";
 import { JSX } from "react";
 import Image from "next/image";
@@ -75,8 +72,8 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
         }
 
         return (
-          <div 
-            key={post.id} 
+          <div
+            key={post.id}
             className={`${colSpan} border border-gray-300 rounded-lg p-3`}
           >
             {variant === "landscape" ? (
@@ -116,10 +113,10 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
       })}
 
       {/* Extra Two Posts Below the Landscape Post */}
-      {posts.slice(1, 3).map((post) => (
-        <div 
-          key={`extra-${post.id}`} 
-          className="border border-gray-300 rounded-lg p-3 px-4"
+      {posts.slice(1, 5).map((post) => (
+        <div
+          key={post.id}
+          className=" border border-gray-300 rounded-lg p-3 px-4"
         >
           <div className="flex flex-col">
             {/* Image Section with Shadow */}

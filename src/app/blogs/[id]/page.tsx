@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react";
-import { FetchPosts } from "@/lib/actions";
+ import { FetchPosts } from "@/lib/actions";
 import { notFound } from "next/navigation";
 import CommentSection from "@/components/comments/comments";
 

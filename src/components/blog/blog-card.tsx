@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { BlogPost } from "@/lib/blog-data";
+import type { BlogPost } from "@/lib/actions";
 import { JSX, useState, useEffect } from "react";
 import { getPostById } from "@/lib/api-functions"; // Import the API function
 
