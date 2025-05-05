@@ -23,7 +23,7 @@ const blogContextData = useBlogContext(); // Get blog context
   const recentPosts = blogPosts
     .filter((post) => !post.featured)
     .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
-    .slice(0, 3)
+    .slice(0, 5)
 
   // Get remaining posts for "Read More" section
   const readMorePosts = blogPosts
@@ -74,7 +74,16 @@ const blogContextData = useBlogContext(); // Get blog context
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Featured Blog Post */}
             <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
-              {featuredPost.length > 0 && <FeaturedPost post={{ ...featuredPost[0], date: featuredPost[0].date || "", image: featuredPost[0].image || "" }} />}
+              {/* {featuredPost.length > 0 && <FeaturedPost post={{ ...featuredPost[0], date: featuredPost[0].date || "", image: featuredPost[0].image || "" }} />} */}
+              {featuredPost && (
+                <FeaturedPost
+                  post={{
+                    ...featuredPost,
+                    date: featuredPost.date || "",
+                    image: featuredPost.image || "",
+                  }}
+                />
+              )}
             </div>
 
             {/* Recent Posts List */}
@@ -133,7 +142,9 @@ const blogContextData = useBlogContext(); // Get blog context
       </div>
 
       {/* Footer */}
-      <Footer />
+      <div className=" px-8">
+        <Footer />
+      </div>
     </main>
   );
 }

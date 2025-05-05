@@ -29,7 +29,7 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
           // Fetch all posts if no category is provided
           relatedPosts = (await getAllPosts()).map((post) => ({
             ...post,
-            author_name: post.author || "Unknown Author", // Provide a default value if necessary
+            author_name: post.author_name || "Unknown Author", // Provide a default value if necessary
             content: post.content || "", // Ensure content is never undefined
           }));
         }
@@ -41,7 +41,7 @@ export default function ReadMoreSection({ postId, category }: ReadMoreSectionPro
           .slice(0, 6)
           .map((post) => ({
             ...post,
-            author_name: post.author || "Unknown Author", // Ensure author_name is present
+            author_name: post.author_name || "Unknown Author", // Ensure author_name is present
           }));
 
         setPosts(filteredPosts);

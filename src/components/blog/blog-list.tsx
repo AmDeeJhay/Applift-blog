@@ -8,7 +8,7 @@ interface BlogListProps {
 
 export function BlogList({ posts }: BlogListProps): JSX.Element {
   if (!posts || posts.length === 0) {
-    return <div>No posts available.</div>;
+    return <div className="text-gray-400 font-small font-poppins">No posts available.</div>;
   }
   
   return (
@@ -18,6 +18,7 @@ export function BlogList({ posts }: BlogListProps): JSX.Element {
           key={post.id}
           postId={post.id}
           post={post}
+          date={post.date || ""}
           variant="compact"
         />
       ))}

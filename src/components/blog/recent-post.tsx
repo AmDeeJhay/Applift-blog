@@ -25,7 +25,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
           const postsData = await getAllPosts();
           setPosts(Array.isArray(postsData)? postsData.map((post) => ({
             ...post,
-            author_name: post.author || "Unknown Author", // Provide a default value if necessary
+            author_name: post.author_name || "Unknown Author", // Provide a default value if necessary
             content: post.content || "", // Ensure content is never undefined
           })) : []);
         } catch (err) {
@@ -69,7 +69,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {posts.slice(0, 5).map((post, index) => {
+      {posts.slice(0, 3).map((post, index) => {
         let variant: "standard" | "landscape" = "standard";
         let colSpan = "";
 
@@ -113,7 +113,7 @@ export function RecentPosts({ initialPosts }: RecentPostsProps): JSX.Element {
                 </div>
               </div>
             ) : (
-              <BlogCard postId={post.id} post={post} variant={variant} />
+              <BlogCard postId={post.id} post={post} variant={variant} date={""} />
             )}
           </div>
         );
