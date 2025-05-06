@@ -71,4 +71,3 @@ export const BlogProvider = ({ children }: { children: ReactNode }) => {
 
 // Custom hook for accessing context
 export const useBlogContext = () => useContext(BlogContext);
-
