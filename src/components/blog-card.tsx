@@ -54,4 +54,3 @@ export function BlogCard({ id, title, author, date, image, featured, excerpt }: 
     </Link>
   )
 }
-
