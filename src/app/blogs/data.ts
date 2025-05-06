@@ -63,5 +63,3 @@ export interface BlogPost {
       excerpt: "How we implemented CI/CD, infrastructure as code, and monitoring to speed up our development cycle.",
     },
   ]
-  
-  
