@@ -74,4 +74,3 @@ export async function CategoriesPage(): Promise<JSX.Element> {
     </main>
   )
 }
-
