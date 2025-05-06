@@ -1,41 +1,126 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react";
-import { notFound } from "next/navigation";
-import CommentSection from "@/components/comments/comments";
-import { useBlogContext } from "src/app/context/blogsContext";
-import type { BlogPost } from "@/lib/actions";
+"use client"
+import Image from "next/image"
+import Link from "next/link"
+import { ChevronLeft, ThumbsUp, Share2, Clock, User, Bookmark } from "lucide-react"
+import { notFound } from "next/navigation"
+import CommentSection from "@/components/comments/comments"
+import { useEffect, useState } from "react"
+import { getPostById, getRelatedPosts } from "@/lib/api-functions"
+import { blogPosts } from "@/lib/blog-data" // Import mock data for fallback
+import { Footer } from "@/components/layout/footer"
+import type { BlogPost } from "@/lib/actions"
 
 interface BlogPageParams {
   params: {
-    id: string;
-  };
+    id: string
+  }
 }
 
 export default function BlogPost({ params }: BlogPageParams) {
-  const { blogPosts, loading, fetchData } = useBlogContext() || {};
-  const blogId = params.id;
+  const [post, setPost] = useState<BlogPost | null>(null)
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const blogId = params.id
 
-  // Fetch data if not already loaded
-  if (!blogPosts && !loading) {
-    fetchData();
-  }
+  useEffect(() => {
+    const fetchPostData = async () => {
+      setLoading(true)
+      try {
+        // Try to fetch from API
+        const fetchedPost = await getPostById(blogId)
+
+        if (fetchedPost) {
+          setPost(fetchedPost)
+
+          // If we have a category, fetch related posts
+          if (fetchedPost.category) {
+            const fetchedRelatedPosts = await getRelatedPosts(fetchedPost.category, blogId)
+            setRelatedPosts(fetchedRelatedPosts)
+          }
+        } else {
+          // If API fails, try to find in mock data
+          const mockPost = blogPosts.find((p) => p.id === blogId)
+          if (mockPost) {
+            // Convert mock data to match API format
+            setPost({
+              ...mockPost,
+              author_name: mockPost.author,
+              content: mockPost.content || "",
+            })
+
+            // Get related posts from mock data
+            const mockRelatedPosts = blogPosts
+              .filter((p) => p.id !== blogId && p.category === mockPost.category)
+              .slice(0, 3)
+              .map((p) => ({
+                ...p,
+                author_name: p.author,
+                content: p.content || "",
+              }))
+
+            setRelatedPosts(mockRelatedPosts)
+          } else {
+            // If not found in mock data either, show 404
+            notFound()
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching blog post:", err)
+        setError("Failed to load blog post")
+
+        // Try to find in mock data as fallback
+        const mockPost = blogPosts.find((p) => p.id === blogId)
+        if (mockPost) {
+          setPost({
+            ...mockPost,
+            author_name: mockPost.author,
+            content: mockPost.content || "",
+          })
+
+          const mockRelatedPosts = blogPosts
+            .filter((p) => p.id !== blogId && p.category === mockPost.category)
+            .slice(0, 3)
+            .map((p) => ({
+              ...p,
+              author_name: p.author,
+              content: p.content || "",
+            }))
+
+          setRelatedPosts(mockRelatedPosts)
+        } else {
+          notFound()
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPostData()
+  }, [blogId])
 
   if (loading) {
-    return <p className="text-center py-12">Loading...</p>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-pulse text-center">
+          <p className="text-xl text-gray-600">Loading post...</p>
+        </div>
+      </div>
+    )
   }
 
-  const post = blogPosts?.find((post) => post.id === blogId);
-
-  if (!post) {
-    notFound();
+  if (error || !post) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-red-600">{error || "Post not found"}</p>
+          <Link href="/blogs" className="mt-4 inline-block text-blue-600 hover:underline">
+            Return to blogs
+          </Link>
+        </div>
+      </div>
+    )
   }
-
-  const relatedPosts: BlogPost[] =
-    blogPosts
-      ?.filter((p: BlogPost) => p.id !== post.id && p.category === post.category)
-      .slice(0, 3) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -60,10 +145,7 @@ export default function BlogPost({ params }: BlogPageParams) {
           <Link href="/blogs" className="text-blue-600 font-medium">
             Our Blogs
           </Link>
-          <Link
-            href="/contact-us"
-            className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800"
-          >
+          <Link href="/contact-us" className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800">
             Contact Us
           </Link>
         </div>
@@ -102,9 +184,7 @@ export default function BlogPost({ params }: BlogPageParams) {
           {/* Article content */}
           <div className="px-6 md:px-16 py-8 md:py-12">
             <div className="mb-8 border-b border-gray-100 pb-6">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 leading-tight">
-                {post.title}
-              </h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 leading-tight">{post.title}</h1>
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center space-x-4">
                   <div className="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
@@ -137,7 +217,7 @@ export default function BlogPost({ params }: BlogPageParams) {
 
             <div className="prose prose-lg max-w-none">
               <p className="text-xl text-gray-700 mb-6 leading-relaxed">{post.excerpt}</p>
-              <p className="text-gray-700">{post.content}</p>
+              <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
           </div>
         </article>
@@ -148,11 +228,7 @@ export default function BlogPost({ params }: BlogPageParams) {
             <h3 className="text-xl font-bold mb-6 text-gray-900">You might also like</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost) => (
-                <Link
-                  key={relatedPost.id}
-                  href={`/blogs/${relatedPost.id}`}
-                  className="group"
-                >
+                <Link key={relatedPost.id} href={`/blogs/${relatedPost.id}`} className="group">
                   <div className="bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md h-full flex flex-col">
                     <div className="relative aspect-video w-full overflow-hidden">
                       <Image
@@ -173,9 +249,7 @@ export default function BlogPost({ params }: BlogPageParams) {
                       <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                         {relatedPost.title}
                       </h4>
-                      <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                        {relatedPost.excerpt}
-                      </p>
+                      <p className="text-sm text-gray-500 mt-2 line-clamp-2">{relatedPost.excerpt}</p>
                     </div>
                   </div>
                 </Link>
@@ -191,6 +265,9 @@ export default function BlogPost({ params }: BlogPageParams) {
           <CommentSection postId={blogId} />
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </main>
-  );
+  )
 }
